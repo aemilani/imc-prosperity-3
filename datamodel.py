@@ -12,7 +12,6 @@ ObservationValue = int
 
 
 class Listing:
-
     def __init__(self, symbol: Symbol, product: Product, denomination: Product):
         self.symbol = symbol
         self.product = product
@@ -20,7 +19,6 @@ class Listing:
 
 
 class ConversionObservation:
-
     def __init__(self, bidPrice: float, askPrice: float, transportFees: float, exportTariff: float, importTariff: float,
                  sugarPrice: float, sunlightIndex: float):
         self.bidPrice = bidPrice
@@ -33,7 +31,6 @@ class ConversionObservation:
 
 
 class Observation:
-
     def __init__(self, plainValueObservations: Dict[Product, ObservationValue],
                  conversionObservations: Dict[Product, ConversionObservation]) -> None:
         self.plainValueObservations = plainValueObservations
@@ -46,7 +43,6 @@ class Observation:
 
 
 class Order:
-
     def __init__(self, symbol: Symbol, price: int, quantity: int) -> None:
         self.symbol = symbol
         self.price = price
@@ -60,14 +56,12 @@ class Order:
 
 
 class OrderDepth:
-
     def __init__(self):
         self.buy_orders: Dict[int, int] = {}
         self.sell_orders: Dict[int, int] = {}
 
 
 class Trade:
-
     def __init__(self, symbol: Symbol, price: int, quantity: int, buyer: UserId = None, seller: UserId = None,
                  timestamp: int = 0) -> None:
         self.symbol = symbol
@@ -87,7 +81,6 @@ class Trade:
 
 
 class TradingState(object):
-
     def __init__(self,
                  traderData: str,
                  timestamp: Time,
@@ -111,6 +104,5 @@ class TradingState(object):
 
 
 class ProsperityEncoder(JSONEncoder):
-
     def default(self, o):
         return o.__dict__
