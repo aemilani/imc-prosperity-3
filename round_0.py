@@ -3,12 +3,23 @@ from datamodel import OrderDepth, TradingState, Order
 from typing import List
 
 
-def trade_resin(curr_position: int) -> List[Order]:
-    fair_value = 10000
+def trade(product: str, state: TradingState) -> List[Order] | None:
+    if product == 'RAINFOREST_RESIN':
+        return trade_resin(state)
+    elif product == 'KELP':
+        return trade_kelp(state)
+
+
+def trade_resin(state: TradingState) -> List[Order]:
+    curr_position = state.position.get('RAINFOREST_RESIN', 0)
+    print(f'RAINFOREST_RESIN position: {curr_position}')
 
     max_position = 50
     max_buy_size = min(max_position, max_position - curr_position)
     max_sell_size = max(-max_position, -max_position - curr_position)
+
+    fair_value = 10000
+    print(f'RAINFOREST_RESIN fair value: {fair_value}')
 
     thr_l = fair_value - 2
     thr_h = fair_value + 2
@@ -26,7 +37,12 @@ def trade_resin(curr_position: int) -> List[Order]:
     return resin_orders
 
 
-def trade_kelp(curr_position: int, order_depth: OrderDepth) -> List[Order]:
+def trade_kelp(state: TradingState) -> List[Order]:
+    curr_position = state.position.get('KELP', 0)
+    print(f'KELP position: {curr_position}')
+
+    order_depth: OrderDepth = state.order_depths['KELP']
+
     max_position = 50
     max_buy_size = min(max_position, max_position - curr_position)
     max_sell_size = max(-max_position, -max_position - curr_position)
@@ -57,23 +73,7 @@ class Trader:
     def run(self, state: TradingState):
         result = {}
         for product in state.order_depths:
-            order_depth: OrderDepth = state.order_depths[product]
-
-            if product in state.position:
-                if state.position[product]:
-                    curr_position: int = state.position[product]
-                else:
-                    curr_position = 0
-            else:
-                curr_position = 0
-            print(f'{product} position: {curr_position}')
-
-            orders: List[Order] = []
-            if product == 'RAINFOREST_RESIN':
-                orders.extend(trade_resin(curr_position))
-            elif product == 'KELP':
-                orders.extend(trade_kelp(curr_position, order_depth))
-
+            orders: List[Order] = trade(product, state)
             result[product] = orders
 
         trader_data = None
