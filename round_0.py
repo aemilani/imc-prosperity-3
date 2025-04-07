@@ -75,6 +75,7 @@ class Trader:
         for product in state.order_depths:
             orders: List[Order] = trade(product, state)
             result[product] = orders
+            print('---')
 
         trader_data = None
         conversions = 1
