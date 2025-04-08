@@ -97,21 +97,32 @@ def trade_kelp(state: TradingState, fair_value: float) -> List[Order]:
     curr_position = state.position.get('KELP', 0)
     print(f'KELP position: {curr_position}')
 
-    # order_depth: OrderDepth = state.order_depths['KELP']
-    # best_ask = min(order_depth.sell_orders.keys())
-    # best_bid = max(order_depth.buy_orders.keys())
-    # best_ask_volume = order_depth.sell_orders[best_ask]
-    # best_bid_volume = order_depth.buy_orders[best_bid]
-    # if best_ask < fair_value:
+    order_depth: OrderDepth = state.order_depths['KELP']
+    best_bid = max(order_depth.buy_orders.keys())
+    best_ask = min(order_depth.sell_orders.keys())
+    best_bid_size = order_depth.buy_orders[best_bid]
+    best_ask_size = order_depth.sell_orders[best_ask]
 
     max_position = 50
     max_buy_size = min(max_position, max_position - curr_position)
     max_sell_size = max(-max_position, -max_position - curr_position)
 
+    orders = []
+
+    # Market taking
+    buy_size = min(max_buy_size, -best_ask_size)
+    sell_size = max(max_sell_size, -best_bid_size)
+    if best_ask <= (fair_value - 1) and abs(best_ask_size) < 15:
+        orders.extend(buy('KELP', best_ask, buy_size))
+        max_buy_size -= buy_size
+
+    if best_bid >= (fair_value + 1) and abs(best_bid_size) < 15:
+        orders.extend(sell('KELP', best_bid, sell_size))
+        max_sell_size -= sell_size
+
+    # Market making
     buy_price = int(np.floor(fair_value))
     sell_price = int(np.ceil(fair_value))
-
-    orders = []
     orders.extend(market_making('KELP', buy_price, max_buy_size, sell_price, max_sell_size))
 
     return orders
@@ -162,5 +173,4 @@ class Trader:
             # print('---')
 
         trader_data = jsonpickle.encode({'kelp_last_price': kelp_fair_value})
-        print(trader_data)
         return result, conversions, trader_data
