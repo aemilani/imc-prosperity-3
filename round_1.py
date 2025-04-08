@@ -4,6 +4,18 @@ from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
 
 
+def market_making(product: str, buy_price: int, buy_size: int,
+                  sell_price: int, sell_size: int) -> List[Order]:
+    orders = []
+    if buy_size > 0:
+        print(f'BUY: {buy_size} @ {buy_price}')
+        orders.append(Order(product, buy_price, buy_size))
+    if sell_size < 0:
+        print(f'SELL: {sell_size} @ {sell_price}')
+        orders.append(Order(product, sell_price, sell_size))
+    return orders
+
+
 def calc_kelp_fair_value(state: TradingState) -> float:
     previous_price = None
     if state.traderData:
@@ -12,11 +24,18 @@ def calc_kelp_fair_value(state: TradingState) -> float:
 
     order_depth: OrderDepth = state.order_depths['KELP']
 
+    best_ask = min(order_depth.sell_orders.keys())
+    best_bid = max(order_depth.buy_orders.keys())
+
     filtered_asks = [price for price in order_depth.sell_orders.keys() if abs(order_depth.sell_orders[price]) >= 15]
     filtered_bids = [price for price in order_depth.buy_orders.keys() if abs(order_depth.buy_orders[price]) >= 15]
-    best_filtered_ask = min(filtered_asks)
-    best_filtered_bid = max(filtered_bids)
-    fair_value = (best_filtered_ask + best_filtered_bid) / 2
+    best_filtered_ask = min(filtered_asks) if len(filtered_asks) > 0 else None
+    best_filtered_bid = max(filtered_bids) if len(filtered_bids) > 0 else None
+
+    if best_filtered_ask and best_filtered_bid:
+        fair_value = (best_filtered_ask + best_filtered_bid) / 2
+    else:
+        fair_value = (best_ask + best_bid) / 2
 
     if not previous_price:
         return fair_value
@@ -57,12 +76,7 @@ def trade_resin(state: TradingState) -> List[Order]:
     sell_price = thr_h
 
     orders = []
-    if max_buy_size > 0:
-        print(f'BUY: {max_buy_size} @ {buy_price}')
-        orders.append(Order('RAINFOREST_RESIN', buy_price, max_buy_size))
-    if max_sell_size < 0:
-        print(f'SELL: {max_sell_size} @ {sell_price}')
-        orders.append(Order('RAINFOREST_RESIN', sell_price, max_sell_size))
+    orders.extend(market_making('RAINFOREST_RESIN', buy_price, max_buy_size, sell_price, max_sell_size))
 
     return orders
 
@@ -75,17 +89,11 @@ def trade_kelp(state: TradingState, fair_value: float) -> List[Order]:
     max_buy_size = min(max_position, max_position - curr_position)
     max_sell_size = max(-max_position, -max_position - curr_position)
 
+    buy_price = int(np.floor(fair_value))
+    sell_price = int(np.ceil(fair_value))
+
     orders = []
-    if max_buy_size > 0:
-        # buy_price = int(np.floor(fair_value)) - 1
-        buy_price = int(np.floor(fair_value))
-        print(f'BUY: {max_buy_size} @ {buy_price}')
-        orders.append(Order('KELP', buy_price, max_buy_size))
-    if max_sell_size < 0:
-        # sell_price = int(np.ceil(fair_value)) + 1
-        sell_price = int(np.ceil(fair_value))
-        print(f'SELL: {max_sell_size} @ {sell_price}')
-        orders.append(Order('KELP', sell_price, max_sell_size))
+    orders.extend(market_making('KELP', buy_price, max_buy_size, sell_price, max_sell_size))
 
     return orders
 
