@@ -75,6 +75,12 @@ def trade_resin(state: TradingState) -> List[Order]:
     curr_position = state.position.get('RAINFOREST_RESIN', 0)
     print(f'RAINFOREST_RESIN position: {curr_position}')
 
+    order_depth: OrderDepth = state.order_depths['RAINFOREST_RESIN']
+    best_bid = max(order_depth.buy_orders.keys())
+    best_ask = min(order_depth.sell_orders.keys())
+    best_bid_size = order_depth.buy_orders[best_bid]
+    best_ask_size = order_depth.sell_orders[best_ask]
+
     max_position = 50
     max_buy_size = min(max_position, max_position - curr_position)
     max_sell_size = max(-max_position, -max_position - curr_position)
@@ -82,12 +88,25 @@ def trade_resin(state: TradingState) -> List[Order]:
     fair_value = 10000
     print(f'RAINFOREST_RESIN fair value: {fair_value}')
 
+    orders = []
+
+    # Market taking
+    buy_size = min(max_buy_size, -best_ask_size)
+    sell_size = max(max_sell_size, -best_bid_size)
+    if best_ask <= (fair_value - 1) and abs(best_ask_size) < 15:
+        orders.extend(buy('RAINFOREST_RESIN', best_ask, buy_size))
+        max_buy_size -= buy_size
+
+    if best_bid >= (fair_value + 1) and abs(best_bid_size) < 15:
+        orders.extend(sell('RAINFOREST_RESIN', best_bid, sell_size))
+        max_sell_size -= sell_size
+
+    # Market making
     thr_l = fair_value - 2
     thr_h = fair_value + 2
     buy_price = thr_l
     sell_price = thr_h
 
-    orders = []
     orders.extend(market_making('RAINFOREST_RESIN', buy_price, max_buy_size, sell_price, max_sell_size))
 
     return orders
@@ -159,8 +178,8 @@ class Trader:
         result = {}
         for product in state.order_depths:
             orders: List[Order] = []
-            # if product == 'RAINFOREST_RESIN':
-            #     orders.extend(trade_resin(state))
+            if product == 'RAINFOREST_RESIN':
+                orders.extend(trade_resin(state))
             if product == 'KELP':
                 kelp_fair_value = calc_kelp_fair_value(state)
                 print(f'KELP fair value: {kelp_fair_value}')
