@@ -1,18 +1,30 @@
 import jsonpickle
 import numpy as np
-from datamodel import OrderDepth, UserId, TradingState, Order
+from datamodel import OrderDepth, TradingState, Order
 from typing import List
+
+
+def buy(product: str, buy_price: int, buy_size: int) -> List[Order]:
+    orders = []
+    if buy_size > 0:
+        print(f'BUY: {buy_size} @ {buy_price}')
+        orders.append(Order(product, buy_price, buy_size))
+    return orders
+
+
+def sell(product: str, sell_price: int, sell_size: int) -> List[Order]:
+    orders = []
+    if sell_size < 0:
+        print(f'SELL: {sell_size} @ {sell_price}')
+        orders.append(Order(product, sell_price, sell_size))
+    return orders
 
 
 def market_making(product: str, buy_price: int, buy_size: int,
                   sell_price: int, sell_size: int) -> List[Order]:
     orders = []
-    if buy_size > 0:
-        print(f'BUY: {buy_size} @ {buy_price}')
-        orders.append(Order(product, buy_price, buy_size))
-    if sell_size < 0:
-        print(f'SELL: {sell_size} @ {sell_price}')
-        orders.append(Order(product, sell_price, sell_size))
+    orders.extend(buy(product, buy_price, buy_size))
+    orders.extend(sell(product, sell_price, sell_size))
     return orders
 
 
@@ -84,6 +96,13 @@ def trade_resin(state: TradingState) -> List[Order]:
 def trade_kelp(state: TradingState, fair_value: float) -> List[Order]:
     curr_position = state.position.get('KELP', 0)
     print(f'KELP position: {curr_position}')
+
+    # order_depth: OrderDepth = state.order_depths['KELP']
+    # best_ask = min(order_depth.sell_orders.keys())
+    # best_bid = max(order_depth.buy_orders.keys())
+    # best_ask_volume = order_depth.sell_orders[best_ask]
+    # best_bid_volume = order_depth.buy_orders[best_bid]
+    # if best_ask < fair_value:
 
     max_position = 50
     max_buy_size = min(max_position, max_position - curr_position)
