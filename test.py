@@ -1,15 +1,16 @@
+import numpy as np
 from datamodel import OrderDepth, TradingState, Order
 from typing import List
 import jsonpickle
 
 
 class Product:
-    AMETHYSTS = "RAINFOREST_RESIN"
-    STARFRUIT = "KELP"
+    RAINFOREST_RESIN = "RAINFOREST_RESIN"
+    KELP = "KELP"
 
 
 PARAMS = {
-    Product.AMETHYSTS: {
+    Product.RAINFOREST_RESIN: {
         "fair_value": 10000,
         "take_width": 1,
         "clear_width": 0,
@@ -17,14 +18,15 @@ PARAMS = {
         "disregard_edge": 1,  # disregards orders for joining or pennying within this value from fair
         "join_edge": 2,  # joins orders within this edge
         "default_edge": 4,
-        "soft_position_limit": 10,
+        "soft_position_limit": 40,
     },
-    Product.STARFRUIT: {
+    Product.KELP: {
         "take_width": 1,
         "clear_width": 0,
         "prevent_adverse": True,
         "adverse_volume": 15,
-        "reversion_beta": -0.229,
+        "reversion_beta": -0.27,
+
         "disregard_edge": 1,
         "join_edge": 0,
         "default_edge": 1,
@@ -38,7 +40,7 @@ class Trader:
             params = PARAMS
         self.params = params
 
-        self.LIMIT = {Product.AMETHYSTS: 20, Product.STARFRUIT: 20}
+        self.LIMIT = {Product.RAINFOREST_RESIN: 50, Product.KELP: 50}
 
     def take_best_orders(
         self,
@@ -162,13 +164,13 @@ class Trader:
                 price
                 for price in order_depth.sell_orders.keys()
                 if abs(order_depth.sell_orders[price])
-                >= self.params[Product.STARFRUIT]["adverse_volume"]
+                >= self.params[Product.KELP]["adverse_volume"]
             ]
             filtered_bid = [
                 price
                 for price in order_depth.buy_orders.keys()
                 if abs(order_depth.buy_orders[price])
-                >= self.params[Product.STARFRUIT]["adverse_volume"]
+                >= self.params[Product.KELP]["adverse_volume"]
             ]
             mm_ask = min(filtered_ask) if len(filtered_ask) > 0 else None
             mm_bid = max(filtered_bid) if len(filtered_bid) > 0 else None
@@ -182,11 +184,14 @@ class Trader:
 
             if traderObject.get("starfruit_last_price", None) != None:
                 last_price = traderObject["starfruit_last_price"]
-                last_returns = (mmmid_price - last_price) / last_price
-                pred_returns = (
-                    last_returns * self.params[Product.STARFRUIT]["reversion_beta"]
-                )
-                fair = mmmid_price + (mmmid_price * pred_returns)
+                # last_returns = (mmmid_price - last_price) / last_price
+                last_returns = np.log(mmmid_price / last_price)
+                # pred_returns = (
+                #     last_returns * self.params[Product.STARFRUIT]["reversion_beta"]
+                # )
+                pred_returns = last_returns * self.params[Product.KELP]["reversion_beta"]
+                # fair = mmmid_price + (mmmid_price * pred_returns)
+                fair = mmmid_price * np.exp(pred_returns)
             else:
                 fair = mmmid_price
             traderObject["starfruit_last_price"] = mmmid_price
@@ -313,92 +318,92 @@ class Trader:
 
         result = {}
 
-        if Product.AMETHYSTS in self.params and Product.AMETHYSTS in state.order_depths:
+        if Product.RAINFOREST_RESIN in self.params and Product.RAINFOREST_RESIN in state.order_depths:
             amethyst_position = (
-                state.position[Product.AMETHYSTS]
-                if Product.AMETHYSTS in state.position
+                state.position[Product.RAINFOREST_RESIN]
+                if Product.RAINFOREST_RESIN in state.position
                 else 0
             )
             amethyst_take_orders, buy_order_volume, sell_order_volume = (
                 self.take_orders(
-                    Product.AMETHYSTS,
-                    state.order_depths[Product.AMETHYSTS],
-                    self.params[Product.AMETHYSTS]["fair_value"],
-                    self.params[Product.AMETHYSTS]["take_width"],
+                    Product.RAINFOREST_RESIN,
+                    state.order_depths[Product.RAINFOREST_RESIN],
+                    self.params[Product.RAINFOREST_RESIN]["fair_value"],
+                    self.params[Product.RAINFOREST_RESIN]["take_width"],
                     amethyst_position,
                 )
             )
             amethyst_clear_orders, buy_order_volume, sell_order_volume = (
                 self.clear_orders(
-                    Product.AMETHYSTS,
-                    state.order_depths[Product.AMETHYSTS],
-                    self.params[Product.AMETHYSTS]["fair_value"],
-                    self.params[Product.AMETHYSTS]["clear_width"],
+                    Product.RAINFOREST_RESIN,
+                    state.order_depths[Product.RAINFOREST_RESIN],
+                    self.params[Product.RAINFOREST_RESIN]["fair_value"],
+                    self.params[Product.RAINFOREST_RESIN]["clear_width"],
                     amethyst_position,
                     buy_order_volume,
                     sell_order_volume,
                 )
             )
             amethyst_make_orders, _, _ = self.make_orders(
-                Product.AMETHYSTS,
-                state.order_depths[Product.AMETHYSTS],
-                self.params[Product.AMETHYSTS]["fair_value"],
+                Product.RAINFOREST_RESIN,
+                state.order_depths[Product.RAINFOREST_RESIN],
+                self.params[Product.RAINFOREST_RESIN]["fair_value"],
                 amethyst_position,
                 buy_order_volume,
                 sell_order_volume,
-                self.params[Product.AMETHYSTS]["disregard_edge"],
-                self.params[Product.AMETHYSTS]["join_edge"],
-                self.params[Product.AMETHYSTS]["default_edge"],
+                self.params[Product.RAINFOREST_RESIN]["disregard_edge"],
+                self.params[Product.RAINFOREST_RESIN]["join_edge"],
+                self.params[Product.RAINFOREST_RESIN]["default_edge"],
                 True,
-                self.params[Product.AMETHYSTS]["soft_position_limit"],
+                self.params[Product.RAINFOREST_RESIN]["soft_position_limit"],
             )
-            result[Product.AMETHYSTS] = (
+            result[Product.RAINFOREST_RESIN] = (
                 amethyst_take_orders + amethyst_clear_orders + amethyst_make_orders
             )
 
-        if Product.STARFRUIT in self.params and Product.STARFRUIT in state.order_depths:
+        if Product.KELP in self.params and Product.KELP in state.order_depths:
             starfruit_position = (
-                state.position[Product.STARFRUIT]
-                if Product.STARFRUIT in state.position
+                state.position[Product.KELP]
+                if Product.KELP in state.position
                 else 0
             )
             starfruit_fair_value = self.starfruit_fair_value(
-                state.order_depths[Product.STARFRUIT], traderObject
+                state.order_depths[Product.KELP], traderObject
             )
             starfruit_take_orders, buy_order_volume, sell_order_volume = (
                 self.take_orders(
-                    Product.STARFRUIT,
-                    state.order_depths[Product.STARFRUIT],
+                    Product.KELP,
+                    state.order_depths[Product.KELP],
                     starfruit_fair_value,
-                    self.params[Product.STARFRUIT]["take_width"],
+                    self.params[Product.KELP]["take_width"],
                     starfruit_position,
-                    self.params[Product.STARFRUIT]["prevent_adverse"],
-                    self.params[Product.STARFRUIT]["adverse_volume"],
+                    self.params[Product.KELP]["prevent_adverse"],
+                    self.params[Product.KELP]["adverse_volume"],
                 )
             )
             starfruit_clear_orders, buy_order_volume, sell_order_volume = (
                 self.clear_orders(
-                    Product.STARFRUIT,
-                    state.order_depths[Product.STARFRUIT],
+                    Product.KELP,
+                    state.order_depths[Product.KELP],
                     starfruit_fair_value,
-                    self.params[Product.STARFRUIT]["clear_width"],
+                    self.params[Product.KELP]["clear_width"],
                     starfruit_position,
                     buy_order_volume,
                     sell_order_volume,
                 )
             )
             starfruit_make_orders, _, _ = self.make_orders(
-                Product.STARFRUIT,
-                state.order_depths[Product.STARFRUIT],
+                Product.KELP,
+                state.order_depths[Product.KELP],
                 starfruit_fair_value,
                 starfruit_position,
                 buy_order_volume,
                 sell_order_volume,
-                self.params[Product.STARFRUIT]["disregard_edge"],
-                self.params[Product.STARFRUIT]["join_edge"],
-                self.params[Product.STARFRUIT]["default_edge"],
+                self.params[Product.KELP]["disregard_edge"],
+                self.params[Product.KELP]["join_edge"],
+                self.params[Product.KELP]["default_edge"],
             )
-            result[Product.STARFRUIT] = (
+            result[Product.KELP] = (
                 starfruit_take_orders + starfruit_clear_orders + starfruit_make_orders
             )
 
