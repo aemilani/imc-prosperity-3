@@ -84,44 +84,56 @@ def calc_kelp_fair_value(state: TradingState) -> float:
 
     order_depth: OrderDepth = state.order_depths['KELP']
 
-    best_ask = min(order_depth.sell_orders.keys())
-    best_bid = max(order_depth.buy_orders.keys())
+    if len(order_depth.sell_orders) != 0 and len(order_depth.buy_orders) != 0:
+        best_ask = min(order_depth.sell_orders.keys())
+        best_bid = max(order_depth.buy_orders.keys())
 
-    filtered_asks = [price for price in order_depth.sell_orders.keys() if abs(order_depth.sell_orders[price]) >= 15]
-    filtered_bids = [price for price in order_depth.buy_orders.keys() if abs(order_depth.buy_orders[price]) >= 15]
-    best_filtered_ask = min(filtered_asks) if len(filtered_asks) > 0 else None
-    best_filtered_bid = max(filtered_bids) if len(filtered_bids) > 0 else None
+        filtered_asks = [price for price in order_depth.sell_orders.keys() if abs(order_depth.sell_orders[price]) >= 15]
+        filtered_bids = [price for price in order_depth.buy_orders.keys() if abs(order_depth.buy_orders[price]) >= 15]
+        best_filtered_ask = min(filtered_asks) if len(filtered_asks) > 0 else None
+        best_filtered_bid = max(filtered_bids) if len(filtered_bids) > 0 else None
 
-    if best_filtered_ask and best_filtered_bid:
-        fair_value = (best_filtered_ask + best_filtered_bid) / 2
+        if best_filtered_ask and best_filtered_bid:
+            fair_value = (best_filtered_ask + best_filtered_bid) / 2
+        else:
+            fair_value = (best_ask + best_bid) / 2
+
+        if not previous_price:
+            return fair_value
+        else:
+            curr_logr = np.log(fair_value / previous_price)
+            next_logr = curr_logr * -0.27  # mean-reversion param
+            return fair_value * np.exp(next_logr)
     else:
-        fair_value = (best_ask + best_bid) / 2
-
-    if not previous_price:
-        return fair_value
-    else:
-        previous_logr = np.log(fair_value / previous_price)
-        next_logr = previous_logr * -0.27
-        return fair_value * np.exp(next_logr)
+        return previous_price
 
 
 def calc_ink_fair_value(state: TradingState) -> float:
     order_depth: OrderDepth = state.order_depths['SQUID_INK']
 
-    best_ask = min(order_depth.sell_orders.keys())
-    best_bid = max(order_depth.buy_orders.keys())
+    if len(order_depth.sell_orders) != 0 and len(order_depth.buy_orders) != 0:
+        best_ask = min(order_depth.sell_orders.keys())
+        best_bid = max(order_depth.buy_orders.keys())
 
-    filtered_asks = [price for price in order_depth.sell_orders.keys() if abs(order_depth.sell_orders[price]) >= 15]
-    filtered_bids = [price for price in order_depth.buy_orders.keys() if abs(order_depth.buy_orders[price]) >= 15]
-    best_filtered_ask = min(filtered_asks) if len(filtered_asks) > 0 else None
-    best_filtered_bid = max(filtered_bids) if len(filtered_bids) > 0 else None
+        filtered_asks = [price for price in order_depth.sell_orders.keys() if abs(order_depth.sell_orders[price]) >= 15]
+        filtered_bids = [price for price in order_depth.buy_orders.keys() if abs(order_depth.buy_orders[price]) >= 15]
+        best_filtered_ask = min(filtered_asks) if len(filtered_asks) > 0 else None
+        best_filtered_bid = max(filtered_bids) if len(filtered_bids) > 0 else None
 
-    if best_filtered_ask and best_filtered_bid:
-        fair_value = (best_filtered_ask + best_filtered_bid) / 2
+        if best_filtered_ask and best_filtered_bid:
+            fair_value = (best_filtered_ask + best_filtered_bid) / 2
+        else:
+            fair_value = (best_ask + best_bid) / 2
+
+        return fair_value
+
     else:
-        fair_value = (best_ask + best_bid) / 2
+        previous_price = None
+        if state.traderData:
+            previous_state = jsonpickle.decode(state.traderData)
+            previous_price = previous_state.get('squid_ink_prices', [None])[-1]
 
-    return fair_value
+        return previous_price
 
 
 def market_taking(product: Product, state: TradingState) -> List[Order]:
