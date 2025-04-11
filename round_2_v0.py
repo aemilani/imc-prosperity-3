@@ -2,7 +2,7 @@ import jsonpickle
 import numpy as np
 from dataclasses import dataclass
 from datamodel import OrderDepth, TradingState, Order
-from typing import List
+from typing import List, Dict, Tuple
 
 
 @dataclass
@@ -76,6 +76,13 @@ class Basket2(Product):
     limit: int = 100
 
 
+@dataclass
+class Spread(Product):
+    name: str = 'SPREAD'
+    limit: int = 60
+    weights: Tuple[int] = (1, -1, -2, -1, -1)  # Basket1, Basket2, Croissants, Jams, Djembes
+
+
 def buy(product_name: str, buy_price: int, buy_size: int) -> List[Order]:
     orders = []
     if buy_size > 0:
@@ -90,6 +97,55 @@ def sell(product_name: str, sell_price: int, sell_size: int) -> List[Order]:
         print(f'SELL: {sell_size} @ {sell_price}')
         orders.append(Order(product_name, sell_price, sell_size))
     return orders
+
+
+def get_spread_order_depth(state: TradingState) -> OrderDepth:
+    order_depths: Dict[str, OrderDepth] = state.order_depths
+    spread = Spread()
+    products = [Basket1(), Basket2(), Croissants(), Jams(), Djembes()]
+    product_weights = spread.weights
+
+    spread_order_depth = OrderDepth()
+    best_bids, best_asks, best_bid_volumes, best_ask_volumes = [], [], [], []
+    for product in products:
+        best_bid = (max(order_depths[product.name].buy_orders.keys())
+                    if order_depths[product.name].buy_orders else 0)
+        best_ask = (min(order_depths[product.name].sell_orders.keys())
+                    if order_depths[product.name].sell_orders else float("inf"))
+        best_bid_volume = order_depths[product.name].buy_orders[best_bid]
+        best_ask_volume = -order_depths[product.name].sell_orders[best_ask]
+        best_bids.append(best_bid)
+        best_asks.append(best_ask)
+        best_bid_volumes.append(best_bid_volume)
+        best_ask_volumes.append(best_ask_volume)
+
+    spread_bid, spread_ask = 0, 0
+    spread_bid_volumes, spread_ask_volumes = [], []
+    for bid, ask, bid_vol, ask_vol, w in zip(best_bids, best_asks, best_bid_volumes, best_ask_volumes, product_weights):
+        if w > 0:
+            spread_bid += bid * w
+            spread_ask += ask * w
+            spread_bid_volumes.append(bid_vol // w)
+            spread_ask_volumes.append(ask_vol // w)
+        if w < 0:
+            spread_bid += ask * w
+            spread_ask += bid * w
+            spread_bid_volumes.append(ask_vol // w)
+            spread_ask_volumes.append(bid_vol // w)
+    spread_bid_volume = min(spread_bid_volumes)
+    spread_ask_volume = min(spread_ask_volumes)
+    spread_order_depth.buy_orders[spread_bid] = spread_bid_volume
+    spread_order_depth.sell_orders[spread_ask] = -spread_ask_volume
+
+    return spread_order_depth
+
+
+def buy_spread(state: TradingState, spread: Spread) -> List[Order]:
+    ...
+
+
+def sell_spread(state: TradingState, spread: Spread) -> List[Order]:
+    ...
 
 
 def calc_kelp_fair_value(state: TradingState) -> float:
