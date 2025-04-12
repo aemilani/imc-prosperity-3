@@ -561,14 +561,14 @@ class Trader:
             position = state.position.get(product_name, 0)
             print(f'{product_name} position: {position}')
             orders: List[Order] = []
-            # if product_name == 'RAINFOREST_RESIN':
-            #     product = RainforestResin(position=position)
-            #     orders.extend(trade_resin(state, product))
-            # if product_name == 'KELP':
-            #     kelp_fair_value = calc_kelp_fair_value(state)
-            #     print(f'KELP fair value: {kelp_fair_value}')
-            #     product = Kelp(position=position, fair_value=kelp_fair_value)
-            #     orders.extend(trade_kelp(state, product))
+            if product_name == 'RAINFOREST_RESIN':
+                product = RainforestResin(position=position)
+                orders.extend(trade_resin(state, product))
+            if product_name == 'KELP':
+                kelp_fair_value = calc_kelp_fair_value(state)
+                print(f'KELP fair value: {kelp_fair_value}')
+                product = Kelp(position=position, fair_value=kelp_fair_value)
+                orders.extend(trade_kelp(state, product))
             if product_name == 'SQUID_INK':
                 ink_fair_value = calc_ink_fair_value(state)
                 print(f'SQUID_INK fair value: {ink_fair_value}')
@@ -583,23 +583,23 @@ class Trader:
             result[product_name] = orders
             print('---')
 
-        # if 'PICNIC_BASKET1' in state.order_depths:
-        #     ts = state.timestamp // 100
-        #     spread_position = get_spread_position(state)
-        #     spread_mid_price = get_spread_mid_price(state)
-        #     print(f'Spread mid-price: {spread_mid_price}')
-        #
-        #     spread_cum_mean, spread_cum_std = update_cumulative_mean_std(
-        #         spread_cum_mean, spread_cum_std, ts, spread_mid_price)
-        #
-        #     if spread_cum_std > 0 and ts > 100:
-        #         spread = Spread(
-        #             position=spread_position, fair_value=spread_mid_price, mean=spread_cum_mean, std=spread_cum_std)
-        #
-        #         spread_orders: Dict[str, List[Order]] = trade_spread(state, spread)
-        #         for product_name, orders in spread_orders.items():
-        #             result[product_name] = orders
-        #             print(orders)
+        if 'PICNIC_BASKET1' in state.order_depths:
+            ts = state.timestamp // 100
+            spread_position = get_spread_position(state)
+            spread_mid_price = get_spread_mid_price(state)
+            print(f'Spread mid-price: {spread_mid_price}')
+
+            spread_cum_mean, spread_cum_std = update_cumulative_mean_std(
+                spread_cum_mean, spread_cum_std, ts, spread_mid_price)
+
+            if spread_cum_std > 0 and ts > 100:
+                spread = Spread(
+                    position=spread_position, fair_value=spread_mid_price, mean=spread_cum_mean, std=spread_cum_std)
+
+                spread_orders: Dict[str, List[Order]] = trade_spread(state, spread)
+                for product_name, orders in spread_orders.items():
+                    result[product_name] = orders
+                    print(orders)
 
         trader_data = jsonpickle.encode({
             'kelp_last_price': kelp_fair_value,
