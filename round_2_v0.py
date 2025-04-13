@@ -95,28 +95,11 @@ def update_cumulative_mean_std(prev_mean, prev_std, n, x):
     new_mean = prev_mean + delta / new_n
 
     # Update variance using Welford's method
-    new_M2 = (prev_std**2) * n + delta * (x - new_mean)
-    new_variance = new_M2 / new_n  # population variance
+    new_m2 = (prev_std**2) * n + delta * (x - new_mean)
+    new_variance = new_m2 / new_n  # population variance
     new_std = new_variance**0.5
 
     return new_mean, new_std
-
-
-
-def buy(product_name: str, buy_price: int, buy_size: int) -> List[Order]:
-    orders = []
-    if buy_size > 0:
-        print(f'BUY: {buy_size} @ {buy_price}')
-        orders.append(Order(product_name, buy_price, buy_size))
-    return orders
-
-
-def sell(product_name: str, sell_price: int, sell_size: int) -> List[Order]:
-    orders = []
-    if sell_size < 0:
-        print(f'SELL: {sell_size} @ {sell_price}')
-        orders.append(Order(product_name, sell_price, sell_size))
-    return orders
 
 
 def get_spread_position(state: TradingState) -> int:
@@ -124,7 +107,6 @@ def get_spread_position(state: TradingState) -> int:
 
 
 def get_target_spread_position_size(spread: Spread) -> int:
-    current_position = spread.position
     zscore = (spread.fair_value - spread.mean) / spread.std
     print(f'Spread zscore: {zscore}')
 
@@ -134,20 +116,6 @@ def get_target_spread_position_size(spread: Spread) -> int:
         target_position = -round(0.95 * spread.limit)
     else:
         target_position = spread.position
-    # if zscore > 3:
-    #     target_position = -spread.limit
-    # elif 1.5 < zscore <= 3:
-    #     target_position = round(-20 * zscore)
-    #     target_position = min(target_position , current_position)
-    # elif 0.5 <= zscore <= 0.5:
-    #     target_position = 0
-    # elif -3 <= zscore < -1.5:
-    #     target_position = round(20 * zscore)
-    #     target_position = max(target_position, current_position)
-    # elif zscore < -3:
-    #     target_position = spread.limit
-    # else:
-    #     target_position = current_position
 
     return target_position
 
