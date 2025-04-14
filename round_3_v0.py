@@ -3,6 +3,8 @@ import numpy as np
 from dataclasses import dataclass
 from datamodel import OrderDepth, TradingState, Order
 from typing import List, Dict, Tuple
+from math import log, sqrt
+from statistics import NormalDist
 
 
 @dataclass
@@ -13,6 +15,12 @@ class Product:
     position: int = 0
     posted_buy_volume: int = 0
     posted_sell_volume: int = 0
+
+
+@dataclass
+class CallOption(Product):
+    strike: int = None
+    expiration: int = None
 
 
 @dataclass
@@ -86,6 +94,15 @@ class Spread(Product):
     std: float = 96.4
 
 
+@dataclass
+class VolcanicRock:
+    spot = Product(name='VOLCANIC_ROCK', limit=400)
+
+    @staticmethod
+    def call_option(strike):
+        return CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike=strike, expiration=7)
+
+
 def get_spread_position(state: TradingState) -> int:
     return state.position.get('PICNIC_BASKET1', 0)
 
@@ -103,6 +120,68 @@ def get_target_spread_position_size(spread: Spread) -> int:
         target_position = spread.position
 
     return target_position
+
+
+class BlackScholes:
+    @staticmethod
+    def black_scholes_call(spot, strike, time_to_expiry, volatility):
+        d1 = (
+            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
+        ) / (volatility * sqrt(time_to_expiry))
+        d2 = d1 - volatility * sqrt(time_to_expiry)
+        call_price = spot * NormalDist().cdf(d1) - strike * NormalDist().cdf(d2)
+        return call_price
+
+    @staticmethod
+    def black_scholes_put(spot, strike, time_to_expiry, volatility):
+        d1 = (log(spot / strike) + (0.5 * volatility * volatility) * time_to_expiry) / (
+            volatility * sqrt(time_to_expiry)
+        )
+        d2 = d1 - volatility * sqrt(time_to_expiry)
+        put_price = strike * NormalDist().cdf(-d2) - spot * NormalDist().cdf(-d1)
+        return put_price
+
+    @staticmethod
+    def delta(spot, strike, time_to_expiry, volatility):
+        d1 = (
+            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
+        ) / (volatility * sqrt(time_to_expiry))
+        return NormalDist().cdf(d1)
+
+    @staticmethod
+    def gamma(spot, strike, time_to_expiry, volatility):
+        d1 = (
+            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
+        ) / (volatility * sqrt(time_to_expiry))
+        return NormalDist().pdf(d1) / (spot * volatility * sqrt(time_to_expiry))
+
+    @staticmethod
+    def vega(spot, strike, time_to_expiry, volatility):
+        d1 = (
+            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
+        ) / (volatility * sqrt(time_to_expiry))
+        return NormalDist().pdf(d1) * (spot * sqrt(time_to_expiry)) / 100
+
+    @staticmethod
+    def implied_volatility(
+        call_price, spot, strike, time_to_expiry, max_iterations=200, tolerance=1e-10
+    ):
+        low_vol = 0.01
+        high_vol = 1.0
+        volatility = (low_vol + high_vol) / 2.0  # Initial guess as the midpoint
+        for _ in range(max_iterations):
+            estimated_price = BlackScholes.black_scholes_call(
+                spot, strike, time_to_expiry, volatility
+            )
+            diff = estimated_price - call_price
+            if abs(diff) < tolerance:
+                break
+            elif diff > 0:
+                high_vol = volatility
+            else:
+                low_vol = volatility
+            volatility = (low_vol + high_vol) / 2.0
+        return volatility
 
 
 def get_spread_products_orders(state: TradingState) -> Tuple[List[int], List[int], List[int], List[int]]:
