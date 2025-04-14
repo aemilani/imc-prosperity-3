@@ -34,34 +34,11 @@ class BlackScholes:
         return call_price
 
     @staticmethod
-    def black_scholes_put(spot, strike, time_to_expiry, volatility):
-        d1 = (log(spot / strike) + (0.5 * volatility * volatility) * time_to_expiry) / (
-            volatility * sqrt(time_to_expiry)
-        )
-        d2 = d1 - volatility * sqrt(time_to_expiry)
-        put_price = strike * NormalDist().cdf(-d2) - spot * NormalDist().cdf(-d1)
-        return put_price
-
-    @staticmethod
     def delta(spot, strike, time_to_expiry, volatility):
         d1 = (
             log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
         ) / (volatility * sqrt(time_to_expiry))
         return NormalDist().cdf(d1)
-
-    @staticmethod
-    def gamma(spot, strike, time_to_expiry, volatility):
-        d1 = (
-            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
-        ) / (volatility * sqrt(time_to_expiry))
-        return NormalDist().pdf(d1) / (spot * volatility * sqrt(time_to_expiry))
-
-    @staticmethod
-    def vega(spot, strike, time_to_expiry, volatility):
-        d1 = (
-            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
-        ) / (volatility * sqrt(time_to_expiry))
-        return NormalDist().pdf(d1) * (spot * sqrt(time_to_expiry)) / 100
 
     @staticmethod
     def implied_volatility(
