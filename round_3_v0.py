@@ -20,7 +20,7 @@ class Product:
 @dataclass
 class CallOption(Product):
     strike: int = None
-    time_to_expiry: int = None
+    time_to_expiry: float = None
 
 
 @dataclass
@@ -100,7 +100,7 @@ class VolcanicRock:
 
     @staticmethod
     def call_option(strike):
-        return CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike=strike, time_to_expiry=4)
+        return CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike=strike, time_to_expiry=5/250)
 
 
 class BlackScholes:
@@ -122,6 +122,12 @@ class BlackScholes:
             log(self.spot) - log(self.strike) + (0.5 * volatility * volatility) * self.time_to_expiry
         ) / (volatility * sqrt(self.time_to_expiry))
         return NormalDist().cdf(d1)
+
+    def vega(self, volatility):
+        d1 = (
+            log(self.spot) - log(self.strike) + (0.5 * volatility * volatility) * self.time_to_expiry
+        ) / (volatility * sqrt(self.time_to_expiry))
+        return NormalDist().pdf(d1) * (self.spot * sqrt(self.time_to_expiry)) / 100
 
     def implied_volatility(self, market_call_price, max_iterations=200, tolerance=1e-10):
         low_vol = 0.01
