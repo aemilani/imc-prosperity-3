@@ -20,7 +20,7 @@ class Product:
 @dataclass
 class CallOption(Product):
     strike: int = None
-    expiration: int = None
+    time_to_expiry: int = None
 
 
 @dataclass
@@ -100,38 +100,36 @@ class VolcanicRock:
 
     @staticmethod
     def call_option(strike):
-        return CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike=strike, expiration=7)
+        return CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike=strike, time_to_expiry=4)
 
 
 class BlackScholes:
-    @staticmethod
-    def call_price(spot, strike, time_to_expiry, volatility):
+    def __init__(self, spot, strike, time_to_expiry):
+        self.spot = spot
+        self.strike = strike
+        self.time_to_expiry = time_to_expiry
+
+    def call_price(self, volatility):
         d1 = (
-            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
-        ) / (volatility * sqrt(time_to_expiry))
-        d2 = d1 - volatility * sqrt(time_to_expiry)
-        call_price = spot * NormalDist().cdf(d1) - strike * NormalDist().cdf(d2)
+            log(self.spot) - log(self.strike) + (0.5 * volatility * volatility) * self.time_to_expiry
+        ) / (volatility * sqrt(self.time_to_expiry))
+        d2 = d1 - volatility * sqrt(self.time_to_expiry)
+        call_price = self.spot * NormalDist().cdf(d1) - self.strike * NormalDist().cdf(d2)
         return call_price
 
-    @staticmethod
-    def delta(spot, strike, time_to_expiry, volatility):
+    def delta(self, volatility):
         d1 = (
-            log(spot) - log(strike) + (0.5 * volatility * volatility) * time_to_expiry
-        ) / (volatility * sqrt(time_to_expiry))
+            log(self.spot) - log(self.strike) + (0.5 * volatility * volatility) * self.time_to_expiry
+        ) / (volatility * sqrt(self.time_to_expiry))
         return NormalDist().cdf(d1)
 
-    @staticmethod
-    def implied_volatility(
-        call_price, spot, strike, time_to_expiry, max_iterations=200, tolerance=1e-10
-    ):
+    def implied_volatility(self, market_call_price, max_iterations=200, tolerance=1e-10):
         low_vol = 0.01
         high_vol = 1.0
         volatility = (low_vol + high_vol) / 2.0  # Initial guess as the midpoint
         for _ in range(max_iterations):
-            estimated_price = BlackScholes.call_price(
-                spot, strike, time_to_expiry, volatility
-            )
-            diff = estimated_price - call_price
+            estimated_price = self.call_price(volatility)
+            diff = estimated_price - market_call_price
             if abs(diff) < tolerance:
                 break
             elif diff > 0:
@@ -152,9 +150,9 @@ def get_target_spread_position_size(spread: Spread) -> int:
 
     thr = 0.8
     if zscore < -thr:
-        target_position = round(0.95 * spread.limit)
+        target_position = spread.limit
     elif zscore > thr:
-        target_position = -round(0.95 * spread.limit)
+        target_position = -spread.limit
     else:
         target_position = spread.position
 
@@ -562,34 +560,33 @@ class Trader:
             squid_ink_prices = previous_state.get('squid_ink_prices', [])
 
         result = {}
-        for product_name in state.order_depths:
-            position = state.position.get(product_name, 0)
-            print(f'{product_name} position: {position}')
-            orders: List[Order] = []
-            if product_name == 'RAINFOREST_RESIN':
-                product = RainforestResin(position=position)
-                orders.extend(trade_resin(state, product))
-            if product_name == 'KELP':
-                kelp_fair_value = calc_kelp_fair_value(state)
-                print(f'KELP fair value: {kelp_fair_value}')
-                product = Kelp(position=position, fair_value=kelp_fair_value)
-                orders.extend(trade_kelp(state, product))
-            if product_name == 'SQUID_INK':
-                ink_fair_value = calc_ink_fair_value(state)
-                print(f'SQUID_INK fair value: {ink_fair_value}')
-                product = SquidInk(position=position, fair_value=ink_fair_value)
-
-                squid_ink_prices.append(ink_fair_value)
-                if len(squid_ink_prices) > 100:
-                    squid_ink_prices = squid_ink_prices[-100:]
-
-                orders.extend(trade_ink(product))
-
-            result[product_name] = orders
-            print('---')
+        # for product_name in state.order_depths:
+        #     position = state.position.get(product_name, 0)
+        #     print(f'{product_name} position: {position}')
+        #     orders: List[Order] = []
+        #     if product_name == 'RAINFOREST_RESIN':
+        #         product = RainforestResin(position=position)
+        #         orders.extend(trade_resin(state, product))
+        #     if product_name == 'KELP':
+        #         kelp_fair_value = calc_kelp_fair_value(state)
+        #         print(f'KELP fair value: {kelp_fair_value}')
+        #         product = Kelp(position=position, fair_value=kelp_fair_value)
+        #         orders.extend(trade_kelp(state, product))
+        #     if product_name == 'SQUID_INK':
+        #         ink_fair_value = calc_ink_fair_value(state)
+        #         print(f'SQUID_INK fair value: {ink_fair_value}')
+        #         product = SquidInk(position=position, fair_value=ink_fair_value)
+        #
+        #         squid_ink_prices.append(ink_fair_value)
+        #         if len(squid_ink_prices) > 100:
+        #             squid_ink_prices = squid_ink_prices[-100:]
+        #
+        #         orders.extend(trade_ink(product))
+        #
+        #     result[product_name] = orders
+        #     print('---')
 
         if 'PICNIC_BASKET1' in state.order_depths:
-            # ts = state.timestamp // 100
             spread_position = get_spread_position(state)
             spread_mid_price = get_spread_mid_price(state)
             print(f'Spread mid-price: {spread_mid_price}')
