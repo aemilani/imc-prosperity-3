@@ -86,22 +86,6 @@ class Spread(Product):
     std: float = 96.4
 
 
-def update_cumulative_mean_std(prev_mean, prev_std, n, x):
-    if n == 0:
-        return x, 0.0
-
-    new_n = n + 1
-    delta = x - prev_mean
-    new_mean = prev_mean + delta / new_n
-
-    # Update variance using Welford's method
-    new_m2 = (prev_std**2) * n + delta * (x - new_mean)
-    new_variance = new_m2 / new_n  # population variance
-    new_std = new_variance**0.5
-
-    return new_mean, new_std
-
-
 def get_spread_position(state: TradingState) -> int:
     return state.position.get('PICNIC_BASKET1', 0)
 
@@ -515,42 +499,38 @@ class Trader:
     def run(self, state: TradingState):
         conversions = 0
         kelp_fair_value = None
-        spread_cum_mean = None
-        spread_cum_std = None
         squid_ink_prices = []
 
         if state.traderData:
             previous_state = jsonpickle.decode(state.traderData)
             squid_ink_prices = previous_state.get('squid_ink_prices', [])
-            spread_cum_mean = previous_state.get('spread_cum_mean', None)
-            spread_cum_std = previous_state.get('spread_cum_std', None)
 
         result = {}
-        # for product_name in state.order_depths:
-        #     position = state.position.get(product_name, 0)
-        #     print(f'{product_name} position: {position}')
-        #     orders: List[Order] = []
-        #     if product_name == 'RAINFOREST_RESIN':
-        #         product = RainforestResin(position=position)
-        #         orders.extend(trade_resin(state, product))
-        #     if product_name == 'KELP':
-        #         kelp_fair_value = calc_kelp_fair_value(state)
-        #         print(f'KELP fair value: {kelp_fair_value}')
-        #         product = Kelp(position=position, fair_value=kelp_fair_value)
-        #         orders.extend(trade_kelp(state, product))
-        #     if product_name == 'SQUID_INK':
-        #         ink_fair_value = calc_ink_fair_value(state)
-        #         print(f'SQUID_INK fair value: {ink_fair_value}')
-        #         product = SquidInk(position=position, fair_value=ink_fair_value)
-        #
-        #         squid_ink_prices.append(ink_fair_value)
-        #         if len(squid_ink_prices) > 100:
-        #             squid_ink_prices = squid_ink_prices[-100:]
-        #
-        #         orders.extend(trade_ink(product))
-        #
-        #     result[product_name] = orders
-        #     print('---')
+        for product_name in state.order_depths:
+            position = state.position.get(product_name, 0)
+            print(f'{product_name} position: {position}')
+            orders: List[Order] = []
+            if product_name == 'RAINFOREST_RESIN':
+                product = RainforestResin(position=position)
+                orders.extend(trade_resin(state, product))
+            if product_name == 'KELP':
+                kelp_fair_value = calc_kelp_fair_value(state)
+                print(f'KELP fair value: {kelp_fair_value}')
+                product = Kelp(position=position, fair_value=kelp_fair_value)
+                orders.extend(trade_kelp(state, product))
+            if product_name == 'SQUID_INK':
+                ink_fair_value = calc_ink_fair_value(state)
+                print(f'SQUID_INK fair value: {ink_fair_value}')
+                product = SquidInk(position=position, fair_value=ink_fair_value)
+
+                squid_ink_prices.append(ink_fair_value)
+                if len(squid_ink_prices) > 100:
+                    squid_ink_prices = squid_ink_prices[-100:]
+
+                orders.extend(trade_ink(product))
+
+            result[product_name] = orders
+            print('---')
 
         if 'PICNIC_BASKET1' in state.order_depths:
             # ts = state.timestamp // 100
@@ -564,22 +544,8 @@ class Trader:
                 result[product_name] = orders
                 print(orders)
 
-            # spread_cum_mean, spread_cum_std = update_cumulative_mean_std(
-            #     spread_cum_mean, spread_cum_std, ts, spread_mid_price)
-            #
-            # if spread_cum_std > 0 and ts > 100:
-            #     spread = Spread(
-            #         position=spread_position, fair_value=spread_mid_price, mean=spread_cum_mean, std=spread_cum_std)
-
-                # spread_orders: Dict[str, List[Order]] = trade_spread(state, spread)
-                # for product_name, orders in spread_orders.items():
-                #     result[product_name] = orders
-                #     print(orders)
-
         trader_data = jsonpickle.encode({
             'kelp_last_price': kelp_fair_value,
-            'squid_ink_prices': squid_ink_prices,
-            'spread_cum_mean': spread_cum_mean,
-            'spread_cum_std': spread_cum_std
+            'squid_ink_prices': squid_ink_prices
         })
         return result, conversions, trader_data
