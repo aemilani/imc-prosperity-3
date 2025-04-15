@@ -15,6 +15,10 @@ class Product:
     position: int = 0
     posted_buy_volume: int = 0
     posted_sell_volume: int = 0
+    best_bid: float = None
+    best_ask: float = None
+    best_bid_size: int = None
+    best_ask_size: int = None
 
 
 @dataclass
@@ -189,6 +193,24 @@ def set_rock_positions(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
     return rock
 
 
+def set_rock_orderbook_data(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
+    order_depths: Dict[str, OrderDepth] = state.order_depths
+    products = [rock.spot] + rock.call_options
+
+    for product in products:
+        if order_depths[product.name].buy_orders and order_depths[product.name].sell_orders:
+            best_bid = max(order_depths[product.name].buy_orders.keys())
+            best_ask = min(order_depths[product.name].sell_orders.keys())
+            best_bid_size = order_depths[product.name].buy_orders[best_bid]
+            best_ask_size = -order_depths[product.name].sell_orders[best_ask]
+            product.best_bid = best_bid
+            product.best_ask = best_ask
+            product.best_bid_size = best_bid_size
+            product.best_ask_size = best_ask_size
+
+    return rock
+
+
 def get_rock_mid_prices(state: TradingState, rock: VolcanicRock) -> List[float]:
     order_depths: Dict[str, OrderDepth] = state.order_depths
     products = [rock.spot] + rock.call_options
@@ -202,10 +224,6 @@ def get_rock_mid_prices(state: TradingState, rock: VolcanicRock) -> List[float]:
         if best_bid and best_ask:
             mid_prices.append((best_bid + best_ask) / 2)
     return mid_prices
-
-
-def trade_rock(state: TradingState, rock: VolcanicRock) -> List[Order]:
-    ...
 
 
 def get_spread_position(state: TradingState) -> int:
@@ -617,6 +635,10 @@ def trade_spread(state: TradingState, spread: Spread) -> Dict[str, List[Order]]:
     return orders
 
 
+def trade_rock(state: TradingState, rock: VolcanicRock) -> Dict[str, List[Order]]:
+    ...
+
+
 class Trader:
     def run(self, state: TradingState):
         conversions = 0
@@ -658,16 +680,16 @@ class Trader:
         #     result[product_name] = orders
         #     print('---')
 
-        if 'PICNIC_BASKET1' in state.order_depths:
-            spread_position = get_spread_position(state)
-            spread_mid_price = get_spread_mid_price(state)
-            print(f'Spread mid-price: {spread_mid_price}')
-
-            spread = Spread(position=spread_position, fair_value=spread_mid_price)
-            spread_orders: Dict[str, List[Order]] = trade_spread(state, spread)
-            for product_name, orders in spread_orders.items():
-                result[product_name] = orders
-                print(orders)
+        # if 'PICNIC_BASKET1' in state.order_depths:
+        #     spread_position = get_spread_position(state)
+        #     spread_mid_price = get_spread_mid_price(state)
+        #     print(f'Spread mid-price: {spread_mid_price}')
+        #
+        #     spread = Spread(position=spread_position, fair_value=spread_mid_price)
+        #     spread_orders: Dict[str, List[Order]] = trade_spread(state, spread)
+        #     for product_name, orders in spread_orders.items():
+        #         result[product_name] = orders
+        #         print(orders)
 
         if 'VOLCANIC_ROCK' in state.order_depths:
             rock = VolcanicRock()
@@ -685,6 +707,11 @@ class Trader:
 
             rock = set_rock_call_greeks(state, rock)
             rock = set_rock_positions(state, rock)
+            rock = set_rock_orderbook_data(state, rock)
+
+            rock_orders: Dict[str, List[Order]] = trade_rock(state, rock)
+            for product_name, orders in rock_orders.items():
+                result[product_name] = orders
 
             rock_prices.append(rock_and_voucher_prices[0])
             if len(rock_prices) > 100:
