@@ -168,6 +168,24 @@ def calc_delta(spot_price: float, strike_price: float, time_to_expiry: float, im
     return bs.delta(implied_vol)
 
 
+def find_atm_call(rock: VolcanicRock) -> CallOption:
+    deltas = [call.delta for call in rock.call_options]
+    selected_delta_idx = np.argmin(np.abs(np.array(deltas) - 0.5))
+    return rock.call_options[selected_delta_idx]
+
+
+def set_greeks(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
+    time_to_expiry = calc_time_to_expiry(day=3, ts=state.timestamp)
+    for call in rock.call_options:
+        call.implied_vol = calc_implied_vol(rock.spot.fair_value, call.strike_price, time_to_expiry, call.fair_value)
+        call.delta = calc_delta(rock.spot.fair_value, call.strike_price, time_to_expiry, call.implied_vol)
+    return rock
+
+
+def trade_rock(state: TradingState, rock: VolcanicRock) -> List[Order]:
+    ...
+
+
 def get_spread_position(state: TradingState) -> int:
     return state.position.get('PICNIC_BASKET1', 0)
 
