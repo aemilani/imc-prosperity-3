@@ -90,7 +90,6 @@ class Trader:
     def coconut_hedge_orders(
         self,
         coconut_order_depth: OrderDepth,
-        coconut_coupon_order_depth: OrderDepth,
         coconut_coupon_orders: List[Order],
         coconut_position: int,
         coconut_coupon_position: int,

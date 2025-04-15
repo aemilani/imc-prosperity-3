@@ -19,8 +19,10 @@ class Product:
 
 @dataclass
 class CallOption(Product):
-    strike: int = None
+    strike_price: int = None
     time_to_expiry: float = None
+    implied_vol: float = None
+    delta: float = None
 
 
 @dataclass
@@ -94,13 +96,13 @@ class Spread(Product):
     std: float = 96.4
 
 
-@dataclass
 class VolcanicRock:
-    spot = Product(name='VOLCANIC_ROCK', limit=400)
-
-    @staticmethod
-    def call_option(strike):
-        return CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike=strike, time_to_expiry=5/250)
+    def __init__(self):
+        self.spot: Product = Product(name='VOLCANIC_ROCK', limit=400)
+        self.strike_prices: List[int] = [9500, 9750, 10000, 10250, 10500]
+        self.call_options: List[CallOption] = [
+            CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike_price=strike, time_to_expiry=5 / 250)
+            for strike in self.strike_prices]
 
 
 class BlackScholes:
@@ -123,6 +125,12 @@ class BlackScholes:
         ) / (volatility * sqrt(self.time_to_expiry))
         return NormalDist().cdf(d1)
 
+    def gamma(self, volatility):
+        d1 = (
+            log(self.spot) - log(self.strike) + (0.5 * volatility * volatility) * self.time_to_expiry
+        ) / (volatility * sqrt(self.time_to_expiry))
+        return NormalDist().pdf(d1) / (self.spot * volatility * sqrt(self.time_to_expiry))
+
     def vega(self, volatility):
         d1 = (
             log(self.spot) - log(self.strike) + (0.5 * volatility * volatility) * self.time_to_expiry
@@ -144,6 +152,20 @@ class BlackScholes:
                 low_vol = volatility
             volatility = (low_vol + high_vol) / 2.0
         return volatility
+
+
+def calc_time_to_expiry(day, ts):
+    return (8 - day) / 250 - ts / 1_000_000 / 250
+
+
+def calc_implied_vol(spot_price: float, strike_price: float, time_to_expiry: float, call_price: float) -> float:
+    bs = BlackScholes(spot=spot_price, strike=strike_price, time_to_expiry=time_to_expiry)
+    return bs.implied_volatility(call_price)
+
+
+def calc_delta(spot_price: float, strike_price: float, time_to_expiry: float, implied_vol: float) -> float:
+    bs = BlackScholes(spot=spot_price, strike=strike_price, time_to_expiry=time_to_expiry)
+    return bs.delta(implied_vol)
 
 
 def get_spread_position(state: TradingState) -> int:
