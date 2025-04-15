@@ -174,12 +174,34 @@ def find_atm_call(rock: VolcanicRock) -> CallOption:
     return rock.call_options[selected_delta_idx]
 
 
-def set_greeks(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
+def set_rock_call_greeks(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
     time_to_expiry = calc_time_to_expiry(day=3, ts=state.timestamp)
     for call in rock.call_options:
         call.implied_vol = calc_implied_vol(rock.spot.fair_value, call.strike_price, time_to_expiry, call.fair_value)
         call.delta = calc_delta(rock.spot.fair_value, call.strike_price, time_to_expiry, call.implied_vol)
     return rock
+
+
+def set_rock_positions(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
+    products = [rock.spot] + rock.call_options
+    for product in products:
+        product.position = state.position.get(product.name, 0)
+    return rock
+
+
+def get_rock_mid_prices(state: TradingState, rock: VolcanicRock) -> List[float]:
+    order_depths: Dict[str, OrderDepth] = state.order_depths
+    products = [rock.spot] + rock.call_options
+
+    mid_prices = []
+    for product in products:
+        best_bid = (max(order_depths[product.name].buy_orders.keys())
+                    if order_depths[product.name].buy_orders else None)
+        best_ask = (min(order_depths[product.name].sell_orders.keys())
+                    if order_depths[product.name].sell_orders else None)
+        if best_bid and best_ask:
+            mid_prices.append((best_bid + best_ask) / 2)
+    return mid_prices
 
 
 def trade_rock(state: TradingState, rock: VolcanicRock) -> List[Order]:
@@ -600,10 +622,14 @@ class Trader:
         conversions = 0
         kelp_fair_value = None
         squid_ink_prices = []
+        rock_prices = []
+        previous_voucher_prices = []
 
         if state.traderData:
             previous_state = jsonpickle.decode(state.traderData)
             squid_ink_prices = previous_state.get('squid_ink_prices', [])
+            rock_prices = previous_state.get('rock_prices', [])
+            previous_voucher_prices = previous_state.get('previous_voucher_prices', [])
 
         result = {}
         # for product_name in state.order_depths:
@@ -643,8 +669,34 @@ class Trader:
                 result[product_name] = orders
                 print(orders)
 
+        if 'VOLCANIC_ROCK' in state.order_depths:
+            rock = VolcanicRock()
+            rock_and_voucher_prices = get_rock_mid_prices(state, rock)
+            if rock_and_voucher_prices[0] is None:  # First one is the underlying and the rest are call options
+                rock_and_voucher_prices[0] = rock_prices[-1]
+            for i in range(len(rock.call_options)):
+                if rock_and_voucher_prices[i + 1] is None:
+                    rock_and_voucher_prices[i + 1] = previous_voucher_prices[i]
+
+            # set current prices
+            products = [rock.spot] + rock.call_options
+            for i, product in enumerate(products):
+                product.fair_value = rock_and_voucher_prices[i]
+
+            rock = set_rock_call_greeks(state, rock)
+            rock = set_rock_positions(state, rock)
+
+            rock_prices.append(rock_and_voucher_prices[0])
+            if len(rock_prices) > 100:
+                rock_prices.pop(0)
+
+
+            previous_voucher_prices = rock_and_voucher_prices[1:]
+
         trader_data = jsonpickle.encode({
             'kelp_last_price': kelp_fair_value,
-            'squid_ink_prices': squid_ink_prices
+            'squid_ink_prices': squid_ink_prices,
+            'rock_prices': rock_prices,
+            'previous_voucher_prices': previous_voucher_prices
         })
         return result, conversions, trader_data
