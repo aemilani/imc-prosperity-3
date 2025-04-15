@@ -104,6 +104,9 @@ class VolcanicRock:
     def __init__(self):
         self.spot: Product = Product(name='VOLCANIC_ROCK', limit=400)
         self.strike_prices: List[int] = [9500, 9750, 10000, 10250, 10500]
+        self.spot_price_window = 1
+        self.vol_spread_window = 10
+        self.vol_spread_z_score_thr = 5
         self.call_options: List[CallOption] = [
             CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike_price=strike, time_to_expiry=5 / 250)
             for strike in self.strike_prices]
@@ -172,10 +175,10 @@ def calc_delta(spot_price: float, strike_price: float, time_to_expiry: float, im
     return bs.delta(implied_vol)
 
 
-def find_atm_call(rock: VolcanicRock) -> CallOption:
+def sort_call_by_delta(rock: VolcanicRock) -> List[int]:
     deltas = [call.delta for call in rock.call_options]
-    selected_delta_idx = np.argmin(np.abs(np.array(deltas) - 0.5))
-    return rock.call_options[selected_delta_idx]
+    sorted_idx = list(np.argsort(np.abs(np.array(deltas) - 0.5)))
+    return sorted_idx
 
 
 def set_rock_call_greeks(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
@@ -187,9 +190,9 @@ def set_rock_call_greeks(state: TradingState, rock: VolcanicRock) -> VolcanicRoc
 
 
 def set_rock_positions(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
-    products = [rock.spot] + rock.call_options
-    for product in products:
-        product.position = state.position.get(product.name, 0)
+    rock.spot.position = state.position.get(rock.spot.name, 0)
+    for call in rock.call_options:
+        call.position = state.position.get(call.name, 0)
     return rock
 
 
@@ -223,6 +226,8 @@ def get_rock_mid_prices(state: TradingState, rock: VolcanicRock) -> List[float]:
                     if order_depths[product.name].sell_orders else None)
         if best_bid and best_ask:
             mid_prices.append((best_bid + best_ask) / 2)
+        else:
+            mid_prices.append(None)
     return mid_prices
 
 
@@ -635,8 +640,74 @@ def trade_spread(state: TradingState, spread: Spread) -> Dict[str, List[Order]]:
     return orders
 
 
-def trade_rock(state: TradingState, rock: VolcanicRock) -> Dict[str, List[Order]]:
-    ...
+# def hedge_rock(rock: VolcanicRock) -> List[Order]:
+#     orders: List[Order] = []
+#     target_spot_position = 0
+#
+#     for call in rock.call_options:
+#         target_spot_position += -call.position * call.delta
+#
+#     if target_spot_position > rock.spot.position:  # buy
+#         size = min((target_spot_position - rock.spot.position), rock.spot.limit)
+#         orders.append(Order(rock.spot.name, round(rock.spot.best_ask), round(size)))
+#     else:  # sell
+#         size = min((rock.spot.position - target_spot_position), rock.spot.limit)
+#         orders.append(Order(rock.spot.name, round(rock.spot.best_bid), -round(size)))
+#
+#     return orders
+
+
+def hedge_rock(rock: VolcanicRock) -> List[Order]:
+    orders: List[Order] = []
+
+    # Calculate net delta from all option positions
+    net_delta = sum(call.delta * call.position for call in rock.call_options)
+
+    # Desired spot position to neutralize delta
+    target_spot_position = -net_delta
+    current_spot_position = rock.spot.position
+
+    # Compute desired hedge quantity
+    hedge_qty = int(round(target_spot_position - current_spot_position))
+
+    # Respect position limits
+    max_buy = rock.spot.limit - current_spot_position
+    max_sell = rock.spot.limit + current_spot_position  # since position can be negative
+
+    if hedge_qty > 0 and rock.spot.best_ask is not None:
+        hedge_qty = min(hedge_qty, max_buy)
+        if hedge_qty > 0:
+            orders.append(Order(rock.spot.name, round(rock.spot.best_ask), hedge_qty))
+
+    elif hedge_qty < 0 and rock.spot.best_bid is not None:
+        hedge_qty = min(-hedge_qty, max_sell)
+        if hedge_qty > 0:
+            orders.append(Order(rock.spot.name, round(rock.spot.best_bid), -hedge_qty))
+
+    return orders
+
+
+def trade_rock_vouchers(rock: VolcanicRock, rock_vol_spreads: List[List[float]]) -> Dict[str, List[Order]]:
+    orders: Dict[str, List[Order]] = {k: [] for k in [call.name for call in rock.call_options]}
+
+    sorted_call_idx = sort_call_by_delta(rock)[:2]
+    for idx in sorted_call_idx:
+        if len(rock_vol_spreads[idx]) == rock.vol_spread_window:
+            call = rock.call_options[idx]
+            spreads = rock_vol_spreads[idx]
+            rock_vol_spread_z_score = (spreads[-1] - np.mean(spreads)) / np.std(spreads)
+
+            if rock_vol_spread_z_score > rock.vol_spread_z_score_thr and call.best_bid:  # short call
+                call_size = min(abs(call.limit + call.position), call.best_bid_size, call.limit)
+                if call_size > 0:
+                    orders[call.name].append(Order(call.name, round(call.best_bid), -round(call_size)))
+
+            if rock_vol_spread_z_score < rock.vol_spread_z_score_thr and call.best_ask:  # long call
+                call_size = min(abs(call.limit - call.position), call.best_ask_size, call.limit)
+                if call_size > 0:
+                    orders[call.name].append(Order(call.name, round(call.best_ask), round(call_size)))
+
+    return orders
 
 
 class Trader:
@@ -646,12 +717,14 @@ class Trader:
         squid_ink_prices = []
         rock_prices = []
         previous_voucher_prices = []
+        rock_vol_spreads = [[], [], [], [], []]
 
         if state.traderData:
             previous_state = jsonpickle.decode(state.traderData)
             squid_ink_prices = previous_state.get('squid_ink_prices', [])
             rock_prices = previous_state.get('rock_prices', [])
             previous_voucher_prices = previous_state.get('previous_voucher_prices', [])
+            rock_vol_spreads = previous_state.get('rock_vol_spreads', [[], [], [], [], []])
 
         result = {}
         # for product_name in state.order_depths:
@@ -694,6 +767,7 @@ class Trader:
         if 'VOLCANIC_ROCK' in state.order_depths:
             rock = VolcanicRock()
             rock_and_voucher_prices = get_rock_mid_prices(state, rock)
+
             if rock_and_voucher_prices[0] is None:  # First one is the underlying and the rest are call options
                 rock_and_voucher_prices[0] = rock_prices[-1]
             for i in range(len(rock.call_options)):
@@ -705,18 +779,32 @@ class Trader:
             for i, product in enumerate(products):
                 product.fair_value = rock_and_voucher_prices[i]
 
+            # set greeks, positions, and orderbook data
             rock = set_rock_call_greeks(state, rock)
             rock = set_rock_positions(state, rock)
             rock = set_rock_orderbook_data(state, rock)
 
-            rock_orders: Dict[str, List[Order]] = trade_rock(state, rock)
-            for product_name, orders in rock_orders.items():
-                result[product_name] = orders
-
+            # update rock prices
             rock_prices.append(rock_and_voucher_prices[0])
-            if len(rock_prices) > 100:
+            if len(rock_prices) > rock.spot_price_window:
                 rock_prices.pop(0)
 
+            if len(rock_prices) == rock.spot_price_window:
+                # logr = np.log(np.array(rock_prices[1:]) / np.array(rock_prices[:-1]))
+                # realized_vol = np.std(logr) * np.sqrt(10000 * 250)
+                for i, call in enumerate(rock.call_options):
+                    vol_spread = call.implied_vol - realized_vol
+                    rock_vol_spreads[i].append(vol_spread)
+                    if len(rock_vol_spreads[i]) > rock.vol_spread_window:
+                        rock_vol_spreads[i].pop(0)
+
+            rock_orders: List[Order] = hedge_rock(rock)
+            result[rock.spot.name] = rock_orders
+
+            voucher_orders: Dict[str, List[Order]] = trade_rock_vouchers(rock, rock_vol_spreads)
+
+            for product_name, orders in voucher_orders.items():
+                result[product_name] = orders
 
             previous_voucher_prices = rock_and_voucher_prices[1:]
 
@@ -724,6 +812,7 @@ class Trader:
             'kelp_last_price': kelp_fair_value,
             'squid_ink_prices': squid_ink_prices,
             'rock_prices': rock_prices,
-            'previous_voucher_prices': previous_voucher_prices
+            'previous_voucher_prices': previous_voucher_prices,
+            'rock_vol_spreads': rock_vol_spreads
         })
         return result, conversions, trader_data
