@@ -1,7 +1,7 @@
 import jsonpickle
 import numpy as np
 from dataclasses import dataclass
-from datamodel import OrderDepth, TradingState, Order
+from datamodel import OrderDepth, TradingState, Order, ConversionObservation
 from typing import List, Dict, Tuple
 from math import log, sqrt
 from statistics import NormalDist
@@ -101,6 +101,21 @@ class Spread(Product):
     std: float = 96.4
 
 
+class Macarons(Product):
+    name: str = 'MAGNIFICENT_MACARONS'
+    limit: int = 75
+    conversion_limit: int = 10
+    make_edge: int = 2
+    make_min_edge: int = 1
+    make_probability: float = 0.566
+    init_make_edge: int = 2
+    min_edge: float = 0.5
+    volume_avg_timestamp: int = 5
+    volume_bar: int = 75
+    dec_edge_discount: float = 0.8
+    step_size: float = 0.5
+
+
 class VolcanicRock:
     def __init__(self):
         self.spot: Product = Product(name='VOLCANIC_ROCK', limit=400)
@@ -161,6 +176,161 @@ class BlackScholes:
                 low_vol = volatility
             volatility = (low_vol + high_vol) / 2.0
         return volatility
+
+
+def macarons_implied_bid(observation: ConversionObservation) -> float:
+    return observation.bidPrice - observation.exportTariff - observation.transportFees - 0.1
+
+
+def macarons_implied_ask(observation: ConversionObservation) -> float:
+    return observation.askPrice + observation.importTariff + observation.transportFees
+
+
+def macarons_adap_edge(mac: Macarons, timestamp: int, curr_edge: float, trader_object: dict) -> float:
+    if timestamp == 0:
+        trader_object["ORCHIDS"]["curr_edge"] = mac.init_make_edge
+        return mac.init_make_edge
+
+    # Timestamp not 0
+    trader_object["ORCHIDS"]["volume_history"].append(abs(mac.position))
+    if len(trader_object["ORCHIDS"]["volume_history"]) > mac.volume_avg_timestamp:
+        trader_object["ORCHIDS"]["volume_history"].pop(0)
+
+    if len(trader_object["ORCHIDS"]["volume_history"]) < mac.volume_avg_timestamp:
+        return curr_edge
+    elif not trader_object["ORCHIDS"]["optimized"]:
+        volume_avg = np.mean(trader_object["ORCHIDS"]["volume_history"])
+
+        # Bump up edge if consistently getting lifted full size
+        if volume_avg >= mac.volume_bar:
+            trader_object["ORCHIDS"]["volume_history"] = [] # clear volume history if edge changed
+            trader_object["ORCHIDS"]["curr_edge"] = curr_edge + mac.step_size
+            return curr_edge + mac.step_size
+
+        # Decrease edge if more cash with less edge, included discount
+        elif mac.dec_edge_discount * mac.volume_bar * (curr_edge - mac.step_size) > volume_avg * curr_edge:
+            if curr_edge - mac.step_size > mac.min_edge:
+                trader_object["ORCHIDS"]["volume_history"] = [] # clear volume history if edge changed
+                trader_object["ORCHIDS"]["curr_edge"] = curr_edge - mac.step_size
+                trader_object["ORCHIDS"]["optimized"] = True
+                return curr_edge - mac.step_size
+            else:
+                trader_object["ORCHIDS"]["curr_edge"] = mac.min_edge
+                return mac.min_edge
+
+    trader_object["ORCHIDS"]["curr_edge"] = curr_edge
+    return curr_edge
+
+
+def macarons_arb_take(mac: Macarons, order_depth: OrderDepth, observation: ConversionObservation, adap_edge: float
+                     ) -> List[Order]:
+    orders: List[Order] = []
+    position_limit = mac.limit
+    buy_order_volume = 0
+    sell_order_volume = 0
+
+    implied_bid = macarons_implied_bid(observation)
+    implied_ask = macarons_implied_ask(observation)
+
+    buy_quantity = position_limit - mac.position
+    sell_quantity = position_limit + mac.position
+
+    ask = implied_ask + adap_edge
+
+    foreign_mid = (observation.askPrice + observation.bidPrice) / 2
+    aggressive_ask = foreign_mid - 1.6
+
+    if aggressive_ask > implied_ask:
+        ask = aggressive_ask
+
+    edge = (ask - implied_ask) * mac.make_probability
+
+    for price in sorted(list(order_depth.sell_orders.keys())):
+        if price > implied_bid - edge:
+            break
+
+        if price < implied_bid - edge:
+            quantity = min(abs(order_depth.sell_orders[price]), buy_quantity) # max amount to buy
+            if quantity > 0:
+                orders.append(Order(mac.name, round(price), quantity))
+                buy_order_volume += quantity
+
+    for price in sorted(list(order_depth.buy_orders.keys()), reverse=True):
+        if price < implied_ask + edge:
+            break
+
+        if price > implied_ask + edge:
+            quantity = min(abs(order_depth.buy_orders[price]), sell_quantity) # max amount to sell
+            if quantity > 0:
+                orders.append(Order(mac.name, round(price), -quantity))
+                sell_order_volume += quantity
+
+    mac.posted_buy_volume += buy_order_volume
+    mac.posted_sell_volume += sell_order_volume
+
+    return orders
+
+
+def macarons_arb_clear(mac: Macarons) -> int:
+    conversions = -mac.position
+    return conversions
+
+
+def macarons_arb_make(mac: Macarons, order_depth: OrderDepth, observation: ConversionObservation, edge: float
+                      ) -> List[Order]:
+    orders: List[Order] = []
+    position_limit = mac.limit
+
+    implied_bid = macarons_implied_bid(observation)
+    implied_ask = macarons_implied_ask(observation)
+
+    bid = implied_bid - edge
+    ask = implied_ask + edge
+
+    # ask = foreign_mid - 1.6 best performance so far
+    foreign_mid = (observation.askPrice + observation.bidPrice) / 2
+    aggressive_ask = foreign_mid - 1.6 # Aggressive ask
+
+    # don't lose money
+    if aggressive_ask >= implied_ask + mac.min_edge:
+        ask = aggressive_ask
+        print("AGGRESSIVE")
+        print(f"ALGO ASK: {round(ask)}")
+        print(f"ALGO BID: {round(bid)}")
+    else:
+        print(f"ALGO ASK: {round(ask)}")
+        print(f"ALGO BID: {round(bid)}")
+
+    filtered_ask = [price for price in order_depth.sell_orders.keys() if abs(order_depth.sell_orders[price]) >= 10]
+    filtered_bid = [price for price in order_depth.buy_orders.keys() if abs(order_depth.buy_orders[price]) >= 20]
+
+    # If we're not best level, penny until min edge
+    if len(filtered_ask) > 0 and ask > filtered_ask[0]:
+        if filtered_ask[0] - 1 > implied_ask:
+            ask = filtered_ask[0] - 1
+        else:
+            ask = implied_ask + edge
+    if len(filtered_bid) > 0 and  bid < filtered_bid[0]:
+        if filtered_bid[0] + 1 < implied_bid:
+            bid = filtered_bid[0] + 1
+        else:
+            bid = implied_bid - edge
+
+    print(f"IMPLIED_BID: {implied_bid}")
+    print(f"IMPLIED_ASK: {implied_ask}")
+    print(f"FOREIGN ASK: {observation.askPrice}")
+    print(f"FOREIGN BID: {observation.bidPrice}")
+
+    buy_quantity = position_limit - (mac.position + mac.posted_buy_volume)
+    if buy_quantity > 0:
+        orders.append(Order(mac.name, round(bid), buy_quantity))  # Buy order
+
+    sell_quantity = position_limit + (mac.position - mac.posted_sell_volume)
+    if sell_quantity > 0:
+        orders.append(Order(mac.name, round(ask), -sell_quantity))  # Sell order
+
+    return orders
+
 
 
 def calc_time_to_expiry(day, ts):
