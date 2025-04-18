@@ -101,17 +101,17 @@ class Spread(Product):
     std: float = 96.4
 
 
+@dataclass
 class Macarons(Product):
     name: str = 'MAGNIFICENT_MACARONS'
     limit: int = 75
     conversion_limit: int = 10
-    make_edge: int = 2
     make_min_edge: int = 1
-    make_probability: float = 0.566
+    make_probability: float = 0.5
     init_make_edge: int = 2
     min_edge: float = 0.5
     volume_avg_timestamp: int = 5
-    volume_bar: int = 75
+    volume_bar: int = 5
     dec_edge_discount: float = 0.8
     step_size: float = 0.5
 
@@ -232,8 +232,8 @@ def macarons_arb_take(mac: Macarons, order_depth: OrderDepth, observation: Conve
     implied_bid = macarons_implied_bid(observation)
     implied_ask = macarons_implied_ask(observation)
 
-    buy_quantity = position_limit - mac.position
-    sell_quantity = position_limit + mac.position
+    buy_quantity = min(position_limit - mac.position, position_limit)
+    sell_quantity = min(position_limit + mac.position, position_limit)
 
     ask = implied_ask + adap_edge
 
@@ -272,8 +272,11 @@ def macarons_arb_take(mac: Macarons, order_depth: OrderDepth, observation: Conve
 
 
 def macarons_arb_clear(mac: Macarons) -> int:
-    conversions = -mac.position
-    return conversions
+    conversion_size = min(mac.conversion_limit, abs(mac.position))
+    if mac.position > 0:
+        return -conversion_size
+    else:
+        return conversion_size
 
 
 def macarons_arb_make(mac: Macarons, order_depth: OrderDepth, observation: ConversionObservation, edge: float
@@ -294,12 +297,13 @@ def macarons_arb_make(mac: Macarons, order_depth: OrderDepth, observation: Conve
     # don't lose money
     if aggressive_ask >= implied_ask + mac.min_edge:
         ask = aggressive_ask
-        print("AGGRESSIVE")
-        print(f"ALGO ASK: {round(ask)}")
-        print(f"ALGO BID: {round(bid)}")
+        # print("AGGRESSIVE")
+        # print(f"ALGO ASK: {round(ask)}")
+        # print(f"ALGO BID: {round(bid)}")
     else:
-        print(f"ALGO ASK: {round(ask)}")
-        print(f"ALGO BID: {round(bid)}")
+        pass
+        # print(f"ALGO ASK: {round(ask)}")
+        # print(f"ALGO BID: {round(bid)}")
 
     filtered_ask = [price for price in order_depth.sell_orders.keys() if abs(order_depth.sell_orders[price]) >= 10]
     filtered_bid = [price for price in order_depth.buy_orders.keys() if abs(order_depth.buy_orders[price]) >= 20]
@@ -316,21 +320,15 @@ def macarons_arb_make(mac: Macarons, order_depth: OrderDepth, observation: Conve
         else:
             bid = implied_bid - edge
 
-    print(f"IMPLIED_BID: {implied_bid}")
-    print(f"IMPLIED_ASK: {implied_ask}")
-    print(f"FOREIGN ASK: {observation.askPrice}")
-    print(f"FOREIGN BID: {observation.bidPrice}")
-
-    buy_quantity = position_limit - (mac.position + mac.posted_buy_volume)
+    buy_quantity = min(position_limit - (mac.position + mac.posted_buy_volume), position_limit)
     if buy_quantity > 0:
         orders.append(Order(mac.name, round(bid), buy_quantity))  # Buy order
 
-    sell_quantity = position_limit + (mac.position - mac.posted_sell_volume)
+    sell_quantity = min(position_limit + (mac.position - mac.posted_sell_volume), position_limit)
     if sell_quantity > 0:
         orders.append(Order(mac.name, round(ask), -sell_quantity))  # Sell order
 
     return orders
-
 
 
 def calc_time_to_expiry(day, ts):
@@ -889,10 +887,37 @@ def trade_rock_vouchers(rock: VolcanicRock, vol_spread: float) -> Dict[str, List
     return orders
 
 
+def trade_macarons(state: TradingState, mac: Macarons) -> List[Order]:
+    order_depth = state.order_depths[mac.name]
+    observations = state.observations.conversionObservations[mac.name]
+
+    orders: List[Order] = []
+
+    max_sell_amount = min(abs(mac.limit + mac.position), mac.conversion_limit)
+    implied_ask = macarons_implied_ask(observations)
+
+    if len(order_depth.buy_orders) != 0:
+        sell_price = max(int(observations.bidPrice - 0.5), int(implied_ask) + 1)
+        orders.append(Order(mac.name, sell_price, -max_sell_amount))
+
+        # bids = [bid for bid in order_depth.buy_orders.keys() if bid > implied_ask]
+        # bids = sorted(bids, reverse=True)
+        # if len(bids) > 0:  # sell
+        #     for bid in bids:
+        #         bid_size = order_depth.buy_orders[bid]
+        #         sell_size = min(bid_size, max_sell_amount, (mac.limit - mac.posted_sell_volume))
+        #         if sell_size > 0:
+        #             orders.append(Order(mac.name, bid, -sell_size))
+        #             mac.posted_sell_volume += sell_size
+
+    return orders
+
+
 class Trader:
     def run(self, state: TradingState):
         conversions = 0
         kelp_fair_value = None
+        previous_state = {}
         squid_ink_prices = []
         previous_rock_prices = []
         rock_vol_spreads = []
@@ -906,31 +931,52 @@ class Trader:
             spot_prices = previous_state.get('spot_prices', [])
 
         result = {}
-        # for product_name in state.order_depths:
-        #     position = state.position.get(product_name, 0)
-        #     print(f'{product_name} position: {position}')
-        #     orders: List[Order] = []
-        #     if product_name == 'RAINFOREST_RESIN':
-        #         product = RainforestResin(position=position)
-        #         orders.extend(trade_resin(state, product))
-        #     if product_name == 'KELP':
-        #         kelp_fair_value = calc_kelp_fair_value(state)
-        #         print(f'KELP fair value: {kelp_fair_value}')
-        #         product = Kelp(position=position, fair_value=kelp_fair_value)
-        #         orders.extend(trade_kelp(state, product))
-        #     if product_name == 'SQUID_INK':
-        #         ink_fair_value = calc_ink_fair_value(state)
-        #         print(f'SQUID_INK fair value: {ink_fair_value}')
-        #         product = SquidInk(position=position, fair_value=ink_fair_value)
-        #
-        #         squid_ink_prices.append(ink_fair_value)
-        #         if len(squid_ink_prices) > 100:
-        #             squid_ink_prices = squid_ink_prices[-100:]
-        #
-        #         orders.extend(trade_ink(product))
-        #
-        #     result[product_name] = orders
-        #     print('---')
+        for product_name in state.order_depths:
+            position = state.position.get(product_name, 0)
+            # print(f'{product_name} position: {position}')
+            orders: List[Order] = []
+            # if product_name == 'RAINFOREST_RESIN':
+            #     product = RainforestResin(position=position)
+            #     orders.extend(trade_resin(state, product))
+            # if product_name == 'KELP':
+            #     kelp_fair_value = calc_kelp_fair_value(state)
+            #     print(f'KELP fair value: {kelp_fair_value}')
+            #     product = Kelp(position=position, fair_value=kelp_fair_value)
+            #     orders.extend(trade_kelp(state, product))
+            # if product_name == 'SQUID_INK':
+            #     ink_fair_value = calc_ink_fair_value(state)
+            #     print(f'SQUID_INK fair value: {ink_fair_value}')
+            #     product = SquidInk(position=position, fair_value=ink_fair_value)
+            #
+            #     squid_ink_prices.append(ink_fair_value)
+            #     if len(squid_ink_prices) > 100:
+            #         squid_ink_prices = squid_ink_prices[-100:]
+            #
+            #     orders.extend(trade_ink(product))
+
+            if product_name == 'MAGNIFICENT_MACARONS':
+                product = Macarons(position=position)
+                print(f'{product_name} position: {position}')
+
+                conversions = macarons_arb_clear(product)
+                print(f'Conversion: {conversions}')
+
+                # orders.extend(trade_macarons(state, product))
+
+                if "ORCHIDS" not in previous_state:
+                    previous_state["ORCHIDS"] = {
+                        "curr_edge": product.init_make_edge, "volume_history": [], "optimized": False}
+
+                adap_edge = macarons_adap_edge(product, state.timestamp,
+                                               previous_state["ORCHIDS"]["curr_edge"], previous_state)
+
+                orders.extend(macarons_arb_take(product, state.order_depths[product.name],
+                    state.observations.conversionObservations[product.name], adap_edge))
+                orders.extend(macarons_arb_make(product, state.order_depths[product.name],
+                    state.observations.conversionObservations[product.name], adap_edge))
+
+            result[product_name] = orders
+            # print('---')
         #
         # if 'PICNIC_BASKET1' in state.order_depths:
         #     spread_position = get_spread_position(state)
@@ -943,48 +989,48 @@ class Trader:
         #         result[product_name] = orders
         #         print(orders)
 
-        if 'VOLCANIC_ROCK' in state.order_depths:
-            rock = VolcanicRock()
-            rock_prices = get_rock_mid_prices(state, rock)
-
-            for i in range(len(rock.call_options) + 1):  # First one is the underlying and the rest are call options
-                if rock_prices[i] is None:
-                    rock_prices[i] = previous_rock_prices[i]
-
-            # set current prices
-            products = [rock.spot] + rock.call_options
-            for i, product in enumerate(products):
-                product.fair_value = rock_prices[i]
-
-            # set greeks, positions, and orderbook data
-            rock = set_rock_call_greeks(state, rock)
-            rock = set_rock_positions(state, rock)
-            rock = set_rock_orderbook_data(state, rock)
-
-            vol_spread = calc_base_iv(rock)
-            rock_vol_spreads.append(vol_spread)
-            if len(rock_vol_spreads) > rock.vol_spread_window:
-                rock_vol_spreads.pop(0)
-
-            spot_prices.append(rock.spot.fair_value)
-            if len(spot_prices) > rock.vol_spread_window:
-                spot_prices.pop(0)
-
-            if len(spot_prices) == rock.vol_spread_window:
-                realized_vol = (
-                        np.std(np.log(np.array(spot_prices[1:]) / np.array(spot_prices[:-1]))) * np.sqrt(10000 * 250))
-                vol_spread = np.mean(rock_vol_spreads)
-                vol_spread = vol_spread - realized_vol
-
-                rock_orders: List[Order] = hedge_rock(rock)
-                result[rock.spot.name] = rock_orders
-
-                voucher_orders: Dict[str, List[Order]] = trade_rock_vouchers(rock, vol_spread)
-
-                for product_name, orders in voucher_orders.items():
-                    result[product_name] = orders
-
-            previous_rock_prices = rock_prices
+        # if 'VOLCANIC_ROCK' in state.order_depths:
+        #     rock = VolcanicRock()
+        #     rock_prices = get_rock_mid_prices(state, rock)
+        #
+        #     for i in range(len(rock.call_options) + 1):  # First one is the underlying and the rest are call options
+        #         if rock_prices[i] is None:
+        #             rock_prices[i] = previous_rock_prices[i]
+        #
+        #     # set current prices
+        #     products = [rock.spot] + rock.call_options
+        #     for i, product in enumerate(products):
+        #         product.fair_value = rock_prices[i]
+        #
+        #     # set greeks, positions, and orderbook data
+        #     rock = set_rock_call_greeks(state, rock)
+        #     rock = set_rock_positions(state, rock)
+        #     rock = set_rock_orderbook_data(state, rock)
+        #
+        #     vol_spread = calc_base_iv(rock)
+        #     rock_vol_spreads.append(vol_spread)
+        #     if len(rock_vol_spreads) > rock.vol_spread_window:
+        #         rock_vol_spreads.pop(0)
+        #
+        #     spot_prices.append(rock.spot.fair_value)
+        #     if len(spot_prices) > rock.vol_spread_window:
+        #         spot_prices.pop(0)
+        #
+        #     if len(spot_prices) == rock.vol_spread_window:
+        #         realized_vol = (
+        #                 np.std(np.log(np.array(spot_prices[1:]) / np.array(spot_prices[:-1]))) * np.sqrt(10000 * 250))
+        #         vol_spread = np.mean(rock_vol_spreads)
+        #         vol_spread = vol_spread - realized_vol
+        #
+        #         rock_orders: List[Order] = hedge_rock(rock)
+        #         result[rock.spot.name] = rock_orders
+        #
+        #         voucher_orders: Dict[str, List[Order]] = trade_rock_vouchers(rock, vol_spread)
+        #
+        #         for product_name, orders in voucher_orders.items():
+        #             result[product_name] = orders
+        #
+        #     previous_rock_prices = rock_prices
 
         trader_data = jsonpickle.encode({
             'kelp_last_price': kelp_fair_value,
