@@ -35,7 +35,7 @@ Sandbox logs:
   "timestamp": 600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 7 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -7\nConversion: 7\nEdge: 0.5",
   "timestamp": 700
 }
@@ -50,7 +50,7 @@ Sandbox logs:
   "timestamp": 900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 5 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -5\nConversion: 5\nEdge: 0.5",
   "timestamp": 1000
 }
@@ -105,7 +105,7 @@ Sandbox logs:
   "timestamp": 2000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 4 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -4\nConversion: 4\nEdge: 0.5",
   "timestamp": 2100
 }
@@ -490,7 +490,7 @@ Sandbox logs:
   "timestamp": 9700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 6 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -6\nConversion: 6\nEdge: 0.5",
   "timestamp": 9800
 }
@@ -550,7 +550,7 @@ Sandbox logs:
   "timestamp": 10900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 5 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -5\nConversion: 5\nEdge: 0.5",
   "timestamp": 11000
 }
@@ -575,7 +575,7 @@ Sandbox logs:
   "timestamp": 11400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 2 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -2\nConversion: 2\nEdge: 0.5",
   "timestamp": 11500
 }
@@ -680,7 +680,7 @@ Sandbox logs:
   "timestamp": 13500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 5 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -5\nConversion: 5\nEdge: 0.5",
   "timestamp": 13600
 }
@@ -755,7 +755,7 @@ Sandbox logs:
   "timestamp": 15000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 5 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -5\nConversion: 5\nEdge: 0.5",
   "timestamp": 15100
 }
@@ -800,7 +800,7 @@ Sandbox logs:
   "timestamp": 15900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 3 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -3\nConversion: 3\nEdge: 0.5",
   "timestamp": 16000
 }
@@ -865,7 +865,7 @@ Sandbox logs:
   "timestamp": 17200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 6 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -6\nConversion: 6\nEdge: 0.5",
   "timestamp": 17300
 }
@@ -905,7 +905,7 @@ Sandbox logs:
   "timestamp": 18000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 6 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -6\nConversion: 6\nEdge: 0.5",
   "timestamp": 18100
 }
@@ -970,7 +970,7 @@ Sandbox logs:
   "timestamp": 19300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 3 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -3\nConversion: 3\nEdge: 0.5",
   "timestamp": 19400
 }
@@ -1355,7 +1355,7 @@ Sandbox logs:
   "timestamp": 27000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 6 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -6\nConversion: 6\nEdge: 0.5",
   "timestamp": 27100
 }
@@ -2070,7 +2070,7 @@ Sandbox logs:
   "timestamp": 41300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 2 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -2\nConversion: 2\nEdge: 0.5",
   "timestamp": 41400
 }
@@ -2280,7 +2280,7 @@ Sandbox logs:
   "timestamp": 45500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 3 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -3\nConversion: 3\nEdge: 0.5",
   "timestamp": 45600
 }
@@ -2390,7 +2390,7 @@ Sandbox logs:
   "timestamp": 47700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 6 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -6\nConversion: 6\nEdge: 0.5",
   "timestamp": 47800
 }
@@ -2525,7 +2525,7 @@ Sandbox logs:
   "timestamp": 50400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 3 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -3\nConversion: 3\nEdge: 0.5",
   "timestamp": 50500
 }
@@ -2650,7 +2650,7 @@ Sandbox logs:
   "timestamp": 52900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 53000
 }
@@ -2670,7 +2670,7 @@ Sandbox logs:
   "timestamp": 53300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 53400
 }
@@ -2685,17 +2685,17 @@ Sandbox logs:
   "timestamp": 53600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 53700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 53800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 53900
 }
@@ -2740,7 +2740,7 @@ Sandbox logs:
   "timestamp": 54700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 54800
 }
@@ -2770,7 +2770,7 @@ Sandbox logs:
   "timestamp": 55300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 55400
 }
@@ -2805,7 +2805,7 @@ Sandbox logs:
   "timestamp": 56000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 56100
 }
@@ -2830,7 +2830,7 @@ Sandbox logs:
   "timestamp": 56500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 56600
 }
@@ -2890,7 +2890,7 @@ Sandbox logs:
   "timestamp": 57700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 57800
 }
@@ -2910,7 +2910,7 @@ Sandbox logs:
   "timestamp": 58100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 58200
 }
@@ -2980,12 +2980,12 @@ Sandbox logs:
   "timestamp": 59500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 59600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 59700
 }
@@ -3045,27 +3045,27 @@ Sandbox logs:
   "timestamp": 60800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 60900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 61000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 61100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 61200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 61300
 }
@@ -3090,7 +3090,7 @@ Sandbox logs:
   "timestamp": 61700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 61800
 }
@@ -3100,12 +3100,12 @@ Sandbox logs:
   "timestamp": 61900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 62000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 62100
 }
@@ -3115,12 +3115,12 @@ Sandbox logs:
   "timestamp": 62200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 62300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 62400
 }
@@ -3135,7 +3135,7 @@ Sandbox logs:
   "timestamp": 62600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 62700
 }
@@ -3155,12 +3155,12 @@ Sandbox logs:
   "timestamp": 63000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 63100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 63200
 }
@@ -3170,17 +3170,17 @@ Sandbox logs:
   "timestamp": 63300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 63400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 63500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 63600
 }
@@ -3200,7 +3200,7 @@ Sandbox logs:
   "timestamp": 63900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 64000
 }
@@ -3210,17 +3210,17 @@ Sandbox logs:
   "timestamp": 64100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 64200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 64300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 64400
 }
@@ -3235,7 +3235,7 @@ Sandbox logs:
   "timestamp": 64600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 64700
 }
@@ -3260,7 +3260,7 @@ Sandbox logs:
   "timestamp": 65100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 65200
 }
@@ -3275,12 +3275,12 @@ Sandbox logs:
   "timestamp": 65400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 65500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 65600
 }
@@ -3310,7 +3310,7 @@ Sandbox logs:
   "timestamp": 66100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 66200
 }
@@ -3330,7 +3330,7 @@ Sandbox logs:
   "timestamp": 66500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 66600
 }
@@ -3360,7 +3360,7 @@ Sandbox logs:
   "timestamp": 67100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 67200
 }
@@ -3375,22 +3375,22 @@ Sandbox logs:
   "timestamp": 67400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 67500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 67600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 67700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 67800
 }
@@ -3425,22 +3425,22 @@ Sandbox logs:
   "timestamp": 68400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 68500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 68600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 68700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 68800
 }
@@ -3465,7 +3465,7 @@ Sandbox logs:
   "timestamp": 69200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 69300
 }
@@ -3480,7 +3480,7 @@ Sandbox logs:
   "timestamp": 69500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 69600
 }
@@ -3505,7 +3505,7 @@ Sandbox logs:
   "timestamp": 70000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 70100
 }
@@ -3515,7 +3515,7 @@ Sandbox logs:
   "timestamp": 70200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 70300
 }
@@ -3525,7 +3525,7 @@ Sandbox logs:
   "timestamp": 70400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 70500
 }
@@ -3535,12 +3535,12 @@ Sandbox logs:
   "timestamp": 70600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 70700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 70800
 }
@@ -3555,22 +3555,22 @@ Sandbox logs:
   "timestamp": 71000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 71100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 71200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 71300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 71400
 }
@@ -3580,7 +3580,7 @@ Sandbox logs:
   "timestamp": 71500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 71600
 }
@@ -3590,7 +3590,7 @@ Sandbox logs:
   "timestamp": 71700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 71800
 }
@@ -3615,17 +3615,17 @@ Sandbox logs:
   "timestamp": 72200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 72300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 72400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 72500
 }
@@ -3640,12 +3640,12 @@ Sandbox logs:
   "timestamp": 72700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 72800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 72900
 }
@@ -3655,7 +3655,7 @@ Sandbox logs:
   "timestamp": 73000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 73100
 }
@@ -3665,17 +3665,17 @@ Sandbox logs:
   "timestamp": 73200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 73300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 73400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 73500
 }
@@ -3685,7 +3685,7 @@ Sandbox logs:
   "timestamp": 73600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 73700
 }
@@ -3695,7 +3695,7 @@ Sandbox logs:
   "timestamp": 73800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 73900
 }
@@ -3705,7 +3705,7 @@ Sandbox logs:
   "timestamp": 74000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 74100
 }
@@ -3720,7 +3720,7 @@ Sandbox logs:
   "timestamp": 74300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 74400
 }
@@ -3730,7 +3730,7 @@ Sandbox logs:
   "timestamp": 74500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 74600
 }
@@ -3740,17 +3740,17 @@ Sandbox logs:
   "timestamp": 74700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 74800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 74900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 75000
 }
@@ -3775,7 +3775,7 @@ Sandbox logs:
   "timestamp": 75400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 75500
 }
@@ -3785,12 +3785,12 @@ Sandbox logs:
   "timestamp": 75600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 75700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 75800
 }
@@ -3805,12 +3805,12 @@ Sandbox logs:
   "timestamp": 76000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 7 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -7\nConversion: 7\nEdge: 0.5",
   "timestamp": 76100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 76200
 }
@@ -3825,7 +3825,7 @@ Sandbox logs:
   "timestamp": 76400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 76500
 }
@@ -3855,22 +3855,22 @@ Sandbox logs:
   "timestamp": 77000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 77100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 77200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 77300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 77400
 }
@@ -3885,7 +3885,7 @@ Sandbox logs:
   "timestamp": 77600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 77700
 }
@@ -3900,7 +3900,7 @@ Sandbox logs:
   "timestamp": 77900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 5 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -5\nConversion: 5\nEdge: 0.5",
   "timestamp": 78000
 }
@@ -3910,7 +3910,7 @@ Sandbox logs:
   "timestamp": 78100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 78200
 }
@@ -3925,7 +3925,7 @@ Sandbox logs:
   "timestamp": 78400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 6 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -6\nConversion: 6\nEdge: 0.5",
   "timestamp": 78500
 }
@@ -3935,7 +3935,7 @@ Sandbox logs:
   "timestamp": 78600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 78700
 }
@@ -3945,7 +3945,7 @@ Sandbox logs:
   "timestamp": 78800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 78900
 }
@@ -3955,12 +3955,12 @@ Sandbox logs:
   "timestamp": 79000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 79100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 79200
 }
@@ -3975,12 +3975,12 @@ Sandbox logs:
   "timestamp": 79400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 79500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 79600
 }
@@ -4010,7 +4010,7 @@ Sandbox logs:
   "timestamp": 80100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 80200
 }
@@ -4030,7 +4030,7 @@ Sandbox logs:
   "timestamp": 80500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 80600
 }
@@ -4040,12 +4040,12 @@ Sandbox logs:
   "timestamp": 80700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 80800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 80900
 }
@@ -4070,7 +4070,7 @@ Sandbox logs:
   "timestamp": 81300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 81400
 }
@@ -4080,7 +4080,7 @@ Sandbox logs:
   "timestamp": 81500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 81600
 }
@@ -4090,12 +4090,12 @@ Sandbox logs:
   "timestamp": 81700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 81800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 81900
 }
@@ -4110,12 +4110,12 @@ Sandbox logs:
   "timestamp": 82100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 82200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 82300
 }
@@ -4150,7 +4150,7 @@ Sandbox logs:
   "timestamp": 82900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 83000
 }
@@ -4160,7 +4160,7 @@ Sandbox logs:
   "timestamp": 83100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 83200
 }
@@ -4170,12 +4170,12 @@ Sandbox logs:
   "timestamp": 83300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 83400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 83500
 }
@@ -4190,7 +4190,7 @@ Sandbox logs:
   "timestamp": 83700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 83800
 }
@@ -4200,7 +4200,7 @@ Sandbox logs:
   "timestamp": 83900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 84000
 }
@@ -4210,12 +4210,12 @@ Sandbox logs:
   "timestamp": 84100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 84200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 84300
 }
@@ -4225,22 +4225,22 @@ Sandbox logs:
   "timestamp": 84400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 84500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 84600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 84700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 84800
 }
@@ -4275,7 +4275,7 @@ Sandbox logs:
   "timestamp": 85400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 85500
 }
@@ -4285,17 +4285,17 @@ Sandbox logs:
   "timestamp": 85600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 85700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 85800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 85900
 }
@@ -4335,12 +4335,12 @@ Sandbox logs:
   "timestamp": 86600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 86700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 86800
 }
@@ -4355,17 +4355,17 @@ Sandbox logs:
   "timestamp": 87000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 87100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 4 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -4\nConversion: 4\nEdge: 0.5",
   "timestamp": 87200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 87300
 }
@@ -4380,12 +4380,12 @@ Sandbox logs:
   "timestamp": 87500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 87600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 87700
 }
@@ -4400,7 +4400,7 @@ Sandbox logs:
   "timestamp": 87900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 88000
 }
@@ -4410,7 +4410,7 @@ Sandbox logs:
   "timestamp": 88100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 88200
 }
@@ -4455,12 +4455,12 @@ Sandbox logs:
   "timestamp": 89000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 89100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 89200
 }
@@ -4470,7 +4470,7 @@ Sandbox logs:
   "timestamp": 89300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 89400
 }
@@ -4490,7 +4490,7 @@ Sandbox logs:
   "timestamp": 89700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 89800
 }
@@ -4505,7 +4505,7 @@ Sandbox logs:
   "timestamp": 90000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 90100
 }
@@ -4515,22 +4515,22 @@ Sandbox logs:
   "timestamp": 90200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 90300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 90400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 90500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 90600
 }
@@ -4545,7 +4545,7 @@ Sandbox logs:
   "timestamp": 90800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 90900
 }
@@ -4570,12 +4570,12 @@ Sandbox logs:
   "timestamp": 91300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 91400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 91500
 }
@@ -4585,12 +4585,12 @@ Sandbox logs:
   "timestamp": 91600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 91700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 91800
 }
@@ -4600,12 +4600,12 @@ Sandbox logs:
   "timestamp": 91900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 92000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 92100
 }
@@ -4635,27 +4635,27 @@ Sandbox logs:
   "timestamp": 92600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 92700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 92800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 92900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 93000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 93100
 }
@@ -4665,12 +4665,12 @@ Sandbox logs:
   "timestamp": 93200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 93300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 5 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -5\nConversion: 5\nEdge: 1.0",
   "timestamp": 93400
 }
@@ -4715,7 +4715,7 @@ Sandbox logs:
   "timestamp": 94200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 94300
 }
@@ -4725,7 +4725,7 @@ Sandbox logs:
   "timestamp": 94400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 94500
 }
@@ -4740,7 +4740,7 @@ Sandbox logs:
   "timestamp": 94700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 94800
 }
@@ -4755,12 +4755,12 @@ Sandbox logs:
   "timestamp": 95000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 95100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 95200
 }
@@ -4810,12 +4810,12 @@ Sandbox logs:
   "timestamp": 96100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 96200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 96300
 }
@@ -4840,7 +4840,7 @@ Sandbox logs:
   "timestamp": 96700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 5 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -5\nConversion: 5\nEdge: 0.5",
   "timestamp": 96800
 }
@@ -4855,12 +4855,12 @@ Sandbox logs:
   "timestamp": 97000
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 97100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 97200
 }
@@ -4870,7 +4870,7 @@ Sandbox logs:
   "timestamp": 97300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 97400
 }
@@ -4885,7 +4885,7 @@ Sandbox logs:
   "timestamp": 97600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 97700
 }
@@ -4895,12 +4895,12 @@ Sandbox logs:
   "timestamp": 97800
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 97900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 98000
 }
@@ -4910,17 +4910,17 @@ Sandbox logs:
   "timestamp": 98100
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 98200
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 98300
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 98400
 }
@@ -4930,7 +4930,7 @@ Sandbox logs:
   "timestamp": 98500
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 1.0",
   "timestamp": 98600
 }
@@ -4950,7 +4950,7 @@ Sandbox logs:
   "timestamp": 98900
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 99000
 }
@@ -4975,7 +4975,7 @@ Sandbox logs:
   "timestamp": 99400
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 99500
 }
@@ -4985,12 +4985,12 @@ Sandbox logs:
   "timestamp": 99600
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 99700
 }
 {
-  "sandboxLog": "",
+  "sandboxLog": "\nConversion request of 10 executed with success",
   "lambdaLog": "MAGNIFICENT_MACARONS position: -10\nConversion: 10\nEdge: 0.5",
   "timestamp": 99800
 }

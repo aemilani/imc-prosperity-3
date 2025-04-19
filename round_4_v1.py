@@ -775,6 +775,7 @@ class Trader:
         v_list = []
         macarons_position_sizes = []
         last_macarons_edge = 0.5
+        previous_sun_index = None
 
         if state.traderData:
             previous_state = jsonpickle.decode(state.traderData)
@@ -786,57 +787,82 @@ class Trader:
             v_list = previous_state.get('v_list', [])
             macarons_position_sizes = previous_state.get('macarons_position_sizes', [])
             last_macarons_edge = previous_state.get('last_macarons_edge', 0.5)
+            previous_sun_index = previous_state.get('previous_sun_index', None)
 
         result = {}
-        # for product_name in state.order_depths:
-        #     position = state.position.get(product_name, 0)
-        #     print(f'{product_name} position: {position}')
-        #     orders: List[Order] = []
-        #     if product_name == 'RAINFOREST_RESIN':
-        #         product = RainforestResin(position=position)
-        #         orders.extend(trade_resin(state, product))
-        #     if product_name == 'KELP':
-        #         kelp_fair_value = calc_kelp_fair_value(state)
-        #         print(f'KELP fair value: {kelp_fair_value}')
-        #         product = Kelp(position=position, fair_value=kelp_fair_value)
-        #         orders.extend(trade_kelp(state, product))
-        #     if product_name == 'SQUID_INK':
-        #         ink_fair_value = calc_ink_fair_value(state)
-        #         print(f'SQUID_INK fair value: {ink_fair_value}')
-        #         product = SquidInk(position=position, fair_value=ink_fair_value)
-        #
-        #         squid_ink_prices.append(ink_fair_value)
-        #         if len(squid_ink_prices) > 100:
-        #             squid_ink_prices = squid_ink_prices[-100:]
-        #
-        #         orders.extend(trade_ink(product))
-        #
-        #     if product_name == 'MAGNIFICENT_MACARONS':
-        #         product = Macarons(position=position)
-        #         print(f'{product_name} position: {position}')
-        #
-        #         conversions = clear_macarons_position(product)
-        #         print(f'Conversion: {conversions}')
-        #
-        #         macarons_position_sizes.append(abs(position))
-        #         if len(macarons_position_sizes) > 5:
-        #             macarons_position_sizes.pop(0)
-        #
-        #         edge = last_macarons_edge
-        #         if len(macarons_position_sizes) == 5:
-        #             if np.mean(macarons_position_sizes) >= 7:
-        #                 edge += 0.5
-        #                 macarons_position_sizes = []
-        #             else:
-        #                 edge -= 0.5
-        #                 macarons_position_sizes = []
-        #         edge = max(0.5, edge)
-        #         print(f'Edge: {edge}')
-        #         last_macarons_edge = edge
-        #
-        #         orders.extend(trade_macarons(state, product, edge))
-        #
-        #     result[product_name] = orders
+        for product_name in state.order_depths:
+            position = state.position.get(product_name, 0)
+            print(f'{product_name} position: {position}')
+            orders: List[Order] = []
+            if product_name == 'RAINFOREST_RESIN':
+                product = RainforestResin(position=position)
+                orders.extend(trade_resin(state, product))
+            if product_name == 'KELP':
+                kelp_fair_value = calc_kelp_fair_value(state)
+                print(f'KELP fair value: {kelp_fair_value}')
+                product = Kelp(position=position, fair_value=kelp_fair_value)
+                orders.extend(trade_kelp(state, product))
+            if product_name == 'SQUID_INK':
+                ink_fair_value = calc_ink_fair_value(state)
+                print(f'SQUID_INK fair value: {ink_fair_value}')
+                product = SquidInk(position=position, fair_value=ink_fair_value)
+
+                squid_ink_prices.append(ink_fair_value)
+                if len(squid_ink_prices) > 100:
+                    squid_ink_prices = squid_ink_prices[-100:]
+
+                orders.extend(trade_ink(product))
+
+            # if product_name == 'MAGNIFICENT_MACARONS':
+            #     product = Macarons(position=position)
+            #     print(f'{product_name} position: {position}')
+            #
+            #     sun_index = state.observations.conversionObservations[product_name].sunlightIndex
+            #     if previous_sun_index:
+            #         diff = sun_index - previous_sun_index
+            #     else:
+            #         diff = 0
+            #
+            #     previous_sun_index = sun_index
+            #
+            #     if diff <= -0.02 and state.order_depths[product_name].sell_orders:  # buy the best ask
+            #         macarons_position_sizes = []
+            #         best_ask = min(state.order_depths[product_name].sell_orders.keys())
+            #         best_ask_size = -state.order_depths[product_name].sell_orders[best_ask]
+            #         buy_size = min(product.limit - product.position, product.limit, best_ask_size)
+            #         if buy_size > 0:
+            #             orders.append(Order(product_name, best_ask, buy_size))
+            #
+            #     else:
+            #         if product.position > 0 and state.order_depths[product_name].buy_orders:  # offload
+            #             macarons_position_sizes = []
+            #             best_bid = max(state.order_depths[product_name].buy_orders.keys())
+            #             best_bid_size = state.order_depths[product_name].buy_orders[best_bid]
+            #             sell_size = min(product.position, best_bid_size)
+            #             orders.append(Order(product_name, best_bid, -sell_size))
+            #         else:  # arbitrage
+            #             conversions = clear_macarons_position(product)
+            #             print(f'Conversion: {conversions}')
+            #
+            #             macarons_position_sizes.append(abs(position))
+            #             if len(macarons_position_sizes) > 5:
+            #                 macarons_position_sizes.pop(0)
+            #
+            #             edge = last_macarons_edge
+            #             if len(macarons_position_sizes) == 5:
+            #                 if np.mean(macarons_position_sizes) >= 7:
+            #                     edge += 0.5
+            #                     macarons_position_sizes = []
+            #                 else:
+            #                     edge -= 0.5
+            #                     macarons_position_sizes = []
+            #             edge = max(0.5, edge)
+            #             print(f'Edge: {edge}')
+            #             last_macarons_edge = edge
+            #
+            #             orders.extend(trade_macarons(state, product, edge))
+
+            result[product_name] = orders
         #     print('---')
         #
         # if 'PICNIC_BASKET1' in state.order_depths:
@@ -850,60 +876,60 @@ class Trader:
         #         result[product_name] = orders
         #         print(orders)
 
-        if 'VOLCANIC_ROCK' in state.order_depths:
-            rock = VolcanicRock()
-            rock_prices = get_rock_mid_prices(state, rock)
-
-            for i in range(len(rock.call_options) + 1):  # First one is the underlying and the rest are call options
-                if rock_prices[i] is None:
-                    rock_prices[i] = previous_rock_prices[i]
-
-            # set current prices
-            products = [rock.spot] + rock.call_options
-            for i, product in enumerate(products):
-                product.fair_value = rock_prices[i]
-
-            # set greeks, positions, and orderbook data
-            rock = set_rock_call_greeks(state, rock)
-            rock = set_rock_positions(state, rock)
-            rock = set_rock_orderbook_data(state, rock)
-
-            for call in rock.call_options:
-                if call.vega > 1e-6:
-                    m_list.append(call.moneyness)
-                    v_list.append(call.implied_vol)
-
-            m_list = m_list[-rock.vol_window * len(rock.call_options):]
-            v_list = v_list[-rock.vol_window * len(rock.call_options):]
-
-            spot_prices.append(rock.spot.fair_value)
-            if len(spot_prices) > rock.vol_window:
-                spot_prices.pop(0)
-
-            if len(m_list) == rock.vol_window * len(rock.call_options) and len(v_list) == rock.vol_window * len(rock.call_options):
-                base_iv = calc_base_iv(m_list, v_list)
-                realized_vol = (
-                        np.std(np.log(np.array(spot_prices[1:]) / np.array(spot_prices[:-1]))) * np.sqrt(10000 * 250))
-                # vol_spread = base_iv - realized_vol
-                vol_spread = base_iv
-
-                rock_vol_spreads.append(vol_spread)
-                if len(rock_vol_spreads) > rock.vol_window:
-                    rock_vol_spreads.pop(0)
-
-                if len(rock_vol_spreads) == rock.vol_window:
-                    vol_spread_z = (vol_spread - np.mean(rock_vol_spreads)) / np.std(rock_vol_spreads)
-                    # vol_spread_z = (rock_vol_spreads[-1] - rock.vol_spread_mean) / rock.vol_spread_std
-
-                    rock_orders: List[Order] = hedge_rock(rock)
-                    result[rock.spot.name] = rock_orders
-
-                    voucher_orders: Dict[str, List[Order]] = trade_rock_vouchers(rock, vol_spread_z)
-
-                    for product_name, orders in voucher_orders.items():
-                        result[product_name] = orders
-
-            previous_rock_prices = rock_prices
+        # if 'VOLCANIC_ROCK' in state.order_depths:
+        #     rock = VolcanicRock()
+        #     rock_prices = get_rock_mid_prices(state, rock)
+        #
+        #     for i in range(len(rock.call_options) + 1):  # First one is the underlying and the rest are call options
+        #         if rock_prices[i] is None:
+        #             rock_prices[i] = previous_rock_prices[i]
+        #
+        #     # set current prices
+        #     products = [rock.spot] + rock.call_options
+        #     for i, product in enumerate(products):
+        #         product.fair_value = rock_prices[i]
+        #
+        #     # set greeks, positions, and orderbook data
+        #     rock = set_rock_call_greeks(state, rock)
+        #     rock = set_rock_positions(state, rock)
+        #     rock = set_rock_orderbook_data(state, rock)
+        #
+        #     for call in rock.call_options:
+        #         if call.vega > 1e-6:
+        #             m_list.append(call.moneyness)
+        #             v_list.append(call.implied_vol)
+        #
+        #     m_list = m_list[-rock.vol_window * len(rock.call_options):]
+        #     v_list = v_list[-rock.vol_window * len(rock.call_options):]
+        #
+        #     spot_prices.append(rock.spot.fair_value)
+        #     if len(spot_prices) > rock.vol_window:
+        #         spot_prices.pop(0)
+        #
+        #     if len(m_list) == rock.vol_window * len(rock.call_options) and len(v_list) == rock.vol_window * len(rock.call_options):
+        #         base_iv = calc_base_iv(m_list, v_list)
+        #         realized_vol = (
+        #                 np.std(np.log(np.array(spot_prices[1:]) / np.array(spot_prices[:-1]))) * np.sqrt(10000 * 250))
+        #         # vol_spread = base_iv - realized_vol
+        #         vol_spread = base_iv
+        #
+        #         rock_vol_spreads.append(vol_spread)
+        #         if len(rock_vol_spreads) > rock.vol_window:
+        #             rock_vol_spreads.pop(0)
+        #
+        #         if len(rock_vol_spreads) == rock.vol_window:
+        #             vol_spread_z = (vol_spread - np.mean(rock_vol_spreads)) / np.std(rock_vol_spreads)
+        #             # vol_spread_z = (rock_vol_spreads[-1] - rock.vol_spread_mean) / rock.vol_spread_std
+        #
+        #             rock_orders: List[Order] = hedge_rock(rock)
+        #             result[rock.spot.name] = rock_orders
+        #
+        #             voucher_orders: Dict[str, List[Order]] = trade_rock_vouchers(rock, vol_spread_z)
+        #
+        #             for product_name, orders in voucher_orders.items():
+        #                 result[product_name] = orders
+        #
+        #     previous_rock_prices = rock_prices
 
         trader_data = jsonpickle.encode({
             'kelp_last_price': kelp_fair_value,
@@ -914,6 +940,7 @@ class Trader:
             'm_list': m_list,
             'v_list': v_list,
             'macarons_position_sizes': macarons_position_sizes,
-            'last_macarons_edge': last_macarons_edge
+            'last_macarons_edge': last_macarons_edge,
+            'previous_sun_index': previous_sun_index
         })
         return result, conversions, trader_data
