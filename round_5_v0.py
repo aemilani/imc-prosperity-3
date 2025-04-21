@@ -98,8 +98,8 @@ class Spread(Product):
     limit: int = 60
     product_names: Tuple[str] = ('PICNIC_BASKET1', 'PICNIC_BASKET2', 'CROISSANTS', 'JAMS', 'DJEMBES')
     product_weights: Tuple[int] = (1, -1, -2, -1, -1)  # Basket1, Basket2, Croissants, Jams, Djembes
-    mean: float = -320.3
-    std: float = 52.3
+    mean: float = -202.3
+    std: float = 83.9
 
 
 @dataclass
