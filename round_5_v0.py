@@ -119,7 +119,7 @@ class VolcanicRock:
         self.vol_spread_std = 0.003
         self.vol_spread_z_score_thr = 1
         self.call_options: List[CallOption] = [
-            CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike_price=strike, time_to_expiry=5 / 250)
+            CallOption(name=f'VOLCANIC_ROCK_VOUCHER_{strike}', limit=200, strike_price=strike, time_to_expiry=3 / 250)
             for strike in self.strike_prices]
 
 
@@ -233,7 +233,7 @@ def sort_call_by_moneyness(rock: VolcanicRock) -> List[int]:
 
 
 def set_rock_call_greeks(state: TradingState, rock: VolcanicRock) -> VolcanicRock:
-    time_to_expiry = calc_time_to_expiry(day=3, ts=state.timestamp)
+    time_to_expiry = calc_time_to_expiry(day=5, ts=state.timestamp)
     for call in rock.call_options:
         intrinsic = max(rock.spot.fair_value - call.strike_price, 0)
         if call.fair_value < intrinsic:
