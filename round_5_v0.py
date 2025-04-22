@@ -874,7 +874,7 @@ class Trader:
 
             for i in range(len(rock.call_options) + 1):  # First one is the underlying and the rest are call options
                 if rock_prices[i] is None:
-                    rock_prices[i] = previous_rock_prices[i]
+                    rock_prices[i] = previous_rock_prices[i] if len(previous_rock_prices) > 0 else 0
 
             # set current prices
             products = [rock.spot] + rock.call_options
